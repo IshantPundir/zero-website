@@ -5,7 +5,7 @@ import Logo from "@/components/Logo";
 import Navbar from "@/components/Navbar";
 
 export default function Home() {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 840);
 
   useEffect(() => {
     const handleResize = () => {
