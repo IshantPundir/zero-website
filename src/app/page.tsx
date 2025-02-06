@@ -26,16 +26,7 @@ export default function Home() {
       <Navbar mobile_view={isMobile} />
 
 
-      <div
-        style={{
-          width: "55px",
-          height: "55px",
-          position: "absolute",
-          top: "20px",
-          left: "20px",
-          zIndex: 1000,
-        }}
-      >
+      <div className={styles.logo}>
         <Logo borderWidth="2px" borderColor="white" />
       </div>
 
@@ -56,7 +47,6 @@ export default function Home() {
 
           <div className={styles.hero_image_overlay}/>
         </div>
-        
       </section>
       {/* ---------------------------------------------------- */}
       
