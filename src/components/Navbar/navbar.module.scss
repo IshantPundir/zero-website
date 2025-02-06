@@ -171,6 +171,12 @@
             margin: 3em;
             font-weight: 300;
             transition: 0.2s ease-in-out;
+
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
 
         a:hover{
