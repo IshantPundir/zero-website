@@ -29,10 +29,13 @@ export default function Home() {
     const sections = gsap.utils.toArray("section");
     
     sections.forEach((section: any, i: number) => {
+      // Only pin the hero section (i === 0)
+      const shouldPin = i === 0;
+      
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        pin: true,
+        pin: shouldPin,
         pinSpacing: false,
         snap: {
           snapTo: 1,
@@ -85,6 +88,19 @@ export default function Home() {
       });
     } else {
       console.log('Vision section not found');
+    }
+  };
+
+  const handleOsmosClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    
+    const osmosSection = document.querySelector(`.${styles.osmos_section}`);
+    if (osmosSection) {
+      gsap.to(window, {
+        duration: 1,
+        scrollTo: osmosSection,
+        ease: "power2.inOut"
+      });
     }
   };
 
@@ -163,7 +179,7 @@ export default function Home() {
           />
         </div>
 
-        <div>
+        <div className={styles.go_to_osmos} onClick={handleOsmosClick}>
           <svg width="16" height="76" viewBox="0 0 16 76" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M7.29289 75.7071C7.68341 76.0976 8.31658 76.0976 8.7071 75.7071L15.0711 69.3431C15.4616 68.9526 15.4616 68.3195 15.0711 67.9289C14.6805 67.5384 14.0474 67.5384 13.6569 67.9289L8 73.5858L2.34314 67.9289C1.95262 67.5384 1.31945 67.5384 0.928929 67.9289C0.538405 68.3195 0.538405 68.9526 0.928929 69.3431L7.29289 75.7071ZM7 -4.37114e-08L7 75L9 75L9 4.37114e-08L7 -4.37114e-08Z" fill="#383838"/>
           </svg>
@@ -176,6 +192,9 @@ export default function Home() {
 
       <section className={styles.osmos_section}>
         <h1>OsmOS!</h1>
+        <div >
+
+        </div>
       </section>
     </div>
   );
