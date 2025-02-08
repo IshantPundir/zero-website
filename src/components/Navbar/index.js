@@ -129,10 +129,14 @@ const NavBarForMobile = (props) => {
     );
 }
 
-const NavBarForDesktop = () => {
+const NavBarForDesktop = ({ color = "white" }) => {
+    const navStyle = {
+        "--nav-color": color,
+        "--nav-shadow-color": `${color}40` // 40 is for 25% opacity
+    };
 
     return (
-        <div className={styles.desktop_navbar}>
+        <div className={styles.desktop_navbar} style={navStyle}>
             <ul className={styles.nav_links}>
                 <li><a href="#" id="mobile-nav-stagger-animation">Vision</a></li>
                 <li><a href="#" id="mobile-nav-stagger-animation">Products</a></li>
@@ -151,6 +155,6 @@ const NavBarForDesktop = () => {
 export default function NavBar(props) {
 
     return (
-        props.mobile_view ? <NavBarForMobile popupCallback={props.popupCallback}/> : <NavBarForDesktop/>
+        props.mobile_view ? <NavBarForMobile popupCallback={props.popupCallback}/> : <NavBarForDesktop color={props.color}/>
     );
 }

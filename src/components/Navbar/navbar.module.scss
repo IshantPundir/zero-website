@@ -7,7 +7,7 @@
     border: none;
     cursor: pointer;
     display: flex;
-    z-index: 999;
+    z-index: 9999;
 }
 .line {
     fill: none;
@@ -52,7 +52,7 @@
     height: 100%;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-    z-index: 100;
+    z-index: 9998;
     opacity: 0;
     background: rgba(0, 0, 0, 0.9);
     touch-action: none;
@@ -65,6 +65,7 @@
         list-style-type: none;
         margin: 0%;
         padding: 0%;
+        z-index: 9999;
     }
     
     .primary_nav {
@@ -127,6 +128,7 @@
             box-shadow: 0px 0px 24px 7px rgba(255, 255, 255, 0.25);
             white-space: nowrap;
             transition: 0.2s ease-in-out;
+            z-index: 1000;
         }    
 
         .preorder_cta:hover{
@@ -157,6 +159,7 @@
     height: fit-content;
     display: flex;
     margin-top: -13%;
+    z-index: 9999;
 
     ul {
         margin: 0;
@@ -167,11 +170,12 @@
         left: 50%;
         transform: translateX(-50%);
         white-space: nowrap;
+        z-index: 9999;
         a {
             margin: 3em;
             font-weight: 300;
             transition: 0.2s ease-in-out;
-
+            color: var(--nav-color, white);
             cursor: pointer;
             user-select: none;
             -webkit-user-select: none;
@@ -188,12 +192,13 @@
     .cta {
         height: fit-content;
         width: fit-content;
-        border: 2px solid white;
+        border: 2px solid var(--nav-color, white);
+        color: var(--nav-color, white);
         padding: 10px 15px 10px 15px;
         border-radius: 4rem;
         display: inline-block;
         box-sizing: border-box;
-        box-shadow: 0px 0px 24px 7px rgba(255, 255, 255, 0.25);        
+        box-shadow: 0px 0px 24px 7px var(--nav-shadow-color, rgba(255, 255, 255, 0.25));        
         transition: 0.4s ease-in-out;
         cursor: pointer;
         user-select: none;
@@ -203,6 +208,7 @@
         position: fixed;
         top: 15px; // Adjusted to match nav links
         right: 25px; // Increased slightly for better spacing
+        z-index: 9999;
     }
 
     .cta:hover{
