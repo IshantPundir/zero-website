@@ -13,6 +13,8 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const [logoColor, setLogoColor] = useState("white");
+  const [mouseX, setMouseX] = useState(0);
+  const [mouseY, setMouseY] = useState(0);
 
   useEffect(() => {
     setIsMobile(window.innerWidth <= 840);
@@ -74,6 +76,28 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const carousel = document.querySelector('.osmos_carousel');
+    if (!carousel) return;
+    
+    gsap.to(carousel, {
+      x: () => -(carousel.scrollWidth - window.innerWidth),
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".osmos_section",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: true,
+        pin: true,
+        anticipatePin: 1
+      }
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
+
   const handleExploreClick = (e: React.MouseEvent) => {
     e.preventDefault();
     console.log('Explore clicked');
@@ -103,6 +127,111 @@ export default function Home() {
       });
     }
   };
+
+  const scrollToItem = (index: number) => {
+    const carousel = document.querySelector(`.${styles.osmos_carousel}`) as HTMLElement;
+    const items = document.querySelectorAll(`.${styles.osmos_carousel_item}`);
+    const buttons = document.querySelectorAll(`.${styles.osmos_nav_button}`);
+    const slider = document.querySelector(`.${styles.osmos_nav_slider}`) as HTMLElement;
+    
+    if (items[index]) {
+      const scrollAmount = index * (window.innerWidth * 0.8 + 21);
+      carousel.scrollTo({
+        left: scrollAmount,
+        behavior: 'smooth'
+      });
+      
+      // Get the clicked button's position and width
+      const activeButton = buttons[index] as HTMLElement;
+      slider.style.width = `${activeButton.offsetWidth}px`;
+      slider.style.left = `${activeButton.offsetLeft}px`;
+      
+      // Update active button state
+      buttons.forEach((button, i) => {
+        if (i === index) {
+          button.classList.add(styles.active);
+        } else {
+          button.classList.remove(styles.active);
+        }
+      });
+    }
+  };
+
+  // Make sure to install the ScrollToPlugin
+  useEffect(() => {
+    // Import ScrollToPlugin dynamically to avoid SSR issues
+    const loadScrollToPlugin = async () => {
+      const ScrollToPlugin = (await import('gsap/ScrollToPlugin')).default;
+      gsap.registerPlugin(ScrollToPlugin);
+    };
+    
+    loadScrollToPlugin();
+  }, []);
+
+  const updateNavigation = () => {
+    const carousel = document.querySelector(`.${styles.osmos_carousel}`) as HTMLElement;
+    const items = document.querySelectorAll(`.${styles.osmos_carousel_item}`);
+    const buttons = document.querySelectorAll(`.${styles.osmos_nav_button}`);
+    const slider = document.querySelector(`.${styles.osmos_nav_slider}`) as HTMLElement;
+
+    // Calculate which item is most visible
+    const scrollLeft = carousel.scrollLeft;
+    const itemWidth = window.innerWidth * 0.8 + 21; // 80vw + gap
+    const activeIndex = Math.round(scrollLeft / itemWidth);
+
+    // Update navigation
+    buttons.forEach((button, i) => {
+      if (i === activeIndex) {
+        button.classList.add(styles.active);
+        const activeButton = button as HTMLElement;
+        slider.style.width = `${activeButton.offsetWidth}px`;
+        slider.style.left = `${activeButton.offsetLeft}px`;
+      } else {
+        button.classList.remove(styles.active);
+      }
+    });
+  };
+
+  useEffect(() => {
+    const carousel = document.querySelector(`.${styles.osmos_carousel}`);
+    
+    // Initialize slider position
+    const activeButton = document.querySelector(`.${styles.osmos_nav_button}.${styles.active}`) as HTMLElement;
+    const slider = document.querySelector(`.${styles.osmos_nav_slider}`) as HTMLElement;
+    
+    if (activeButton && slider) {
+      slider.style.width = `${activeButton.offsetWidth}px`;
+      slider.style.left = `${activeButton.offsetLeft}px`;
+    }
+
+    // Add scroll event listener
+    carousel?.addEventListener('scroll', updateNavigation);
+
+    // Cleanup
+    return () => {
+      carousel?.removeEventListener('scroll', updateNavigation);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const asperSection = document.querySelector(`.${styles.asper_section}`);
+      if (!asperSection) return;
+
+      const rect = asperSection.getBoundingClientRect();
+      if (e.clientY >= rect.top && e.clientY <= rect.bottom) {
+        // Calculate mouse position relative to the center of the section
+        const xValue = (e.clientX - window.innerWidth / 2) / 50;
+        const yValue = (e.clientY - rect.top - rect.height / 2) / 50;
+        
+        setMouseX(-xValue); // Inverse movement for natural parallax feel
+        setMouseY(-yValue);
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   return (
     <div className={styles.page}>
@@ -192,9 +321,89 @@ export default function Home() {
 
       <section className={styles.osmos_section}>
         <h1>OsmOS!</h1>
-        <div >
-
+        <div className={styles.osmos_nav}>
+          <div className={styles.osmos_nav_slider}></div>
+          <button 
+            className={`${styles.osmos_nav_button} ${styles.active}`}
+            onClick={() => scrollToItem(0)}
+          >
+            Overview
+          </button>
+          <button 
+            className={styles.osmos_nav_button}
+            onClick={() => scrollToItem(1)}
+          >
+            Features
+          </button>
+          <button 
+            className={styles.osmos_nav_button}
+            onClick={() => scrollToItem(2)}
+          >
+            Technology
+          </button>
+          <button 
+            className={styles.osmos_nav_button}
+            onClick={() => scrollToItem(3)}
+          >
+            Benefits
+          </button>
         </div>
+        <div className={styles.osmos_carousel}>
+          <div className={styles.osmos_carousel_item}>
+            <div>
+              <h2>OsmOS 1</h2>
+              <p>
+                OsmOS 1 is a new operating system that is designed to be a more intuitive and humane operating system. It is a new operating system that is designed to be a more intuitive and humane operating system.
+              </p>
+            </div>
+            <Image src="/images/osmos-1.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
+          </div>
+
+          <div className={styles.osmos_carousel_item}>
+            <div>
+              <h2>OsmOS 2</h2>
+              <p>
+                OsmOS 1 is a new operating system that is designed to be a more intuitive and humane operating system. It is a new operating system that is designed to be a more intuitive and humane operating system.
+              </p>
+            </div>
+            <Image src="/images/osmos-1.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
+          </div>
+
+          <div className={styles.osmos_carousel_item}>
+            <div>
+              <h2>OsmOS 3</h2>
+              <p>
+                OsmOS 1 is a new operating system that is designed to be a more intuitive and humane operating system. It is a new operating system that is designed to be a more intuitive and humane operating system.
+              </p>
+            </div>
+            <Image src="/images/osmos-1.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
+          </div>
+
+          <div className={styles.osmos_carousel_item}>
+            <div>
+              <h2>OsmOS 4</h2>
+              <p>
+                OsmOS 1 is a new operating system that is designed to be a more intuitive and humane operating system. It is a new operating system that is designed to be a more intuitive and humane operating system.
+              </p>
+            </div>
+            <Image src="/images/osmos-1.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
+          </div>
+        </div>
+        
+      </section>
+
+      <section className={styles.asper_section}>
+        <h1>Asper</h1>
+        <Image 
+          src="/images/asper_new_all_trans.png" 
+          alt="Aspers" 
+          width={2606} 
+          height={840}
+          style={{
+            transform: `translate(${mouseX}px, ${mouseY}px)`,
+            transition: 'transform 0.2s ease-out'
+          }}
+        />
       </section>
     </div>
   );

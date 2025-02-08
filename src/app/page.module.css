@@ -284,8 +284,6 @@
   }
 }
 
-
-
 /* Osmos Section */
 .osmos_section {
   width: 100vw;
@@ -296,5 +294,128 @@
   align-items: center;
   background-color: #ededed;
   color: #1a1a1a;
+  scroll-snap-align: start;  /* Ensures section snaps to viewport */
+  scroll-snap-stop: always;  /* Forces a stop at this section */
+}
+
+.osmos_section h1 {
+  font-size: 200px;
+  font-weight: 600;
+  white-space: nowrap; /* Prevents text wrapping */
+  margin-right: auto; /* Move to the right of the screen */
+  padding-left: 21px;
+}
+
+.osmos_carousel {
+  display: flex;
+  flex-direction: row;
+  gap: 21px;
+  margin-left: auto;
+  padding: 21px;
+  background-color: #E1E1E1;
+  max-width: calc(100vw - 42px);
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+}
+
+/* Hide scrollbar for Chrome/Safari */
+.osmos_carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.osmos_carousel_item {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-width: 80vw;
+  padding: 0 21px;
+  scroll-snap-align: start;  /* Ensures items snap into place */
+  scroll-snap-stop: always;  /* Forces a stop at each item */
+}
+
+.osmos_carousel_item img {
+  height: 40vh !important;
+  width: 50vw !important;
+}
+
+.osmos_nav {
+  display: flex;
+  gap: 13px;
+  margin-bottom: 21px;
+  padding: 0 21px;
+  position: relative;
+  margin-left: 21px; /* Add left margin to align with carousel */
+  align-self: flex-start; /* Align to the left of the container */
+}
+
+.osmos_nav_button {
+  padding: 8px 21px;
+  border: none; /* Ensures no visible borders */
+  background: transparent;
+  color: #1a1a1a;
+  cursor: pointer;
+  font-size: 14px;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+  position: relative;
+  z-index: 1;
+}
+
+.osmos_nav_button.active {
+  color: #ededed;
+  font-weight: 100;
+
+}
+
+.osmos_nav_slider {
+  position: absolute;
+  height: 100%;
+  background: #1a1a1a;
+  border-radius: 21px;
+  transition: all 0.3s ease;
+  z-index: 0;
+}
+
+/* Asper Section  */
+
+.asper_section {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #B7CDFF;  /* Dark background to contrast with osmos section */
+  color: #1a1a1a;
+  position: relative;
   scroll-snap-align: start;
+  scroll-snap-stop: always;
+  overflow:hidden;
+
+}
+
+.asper_section img {
+  width: auto;
+  height: min(80vh, 900px);
+
+  object-fit:cover;
+  position: absolute;
+  bottom: -30px;
+}
+
+.asper_section h1 {
+  position: absolute;
+  top: 24px;
+  font-size: 200px;
+  font-weight: 600;
+  white-space: nowrap;
+  margin-right: auto;
+  padding-left: 21px;
+  user-select: none;
 }
