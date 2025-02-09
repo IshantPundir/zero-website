@@ -15,6 +15,7 @@ export default function Home() {
   const [logoColor, setLogoColor] = useState("white");
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   useEffect(() => {
     setIsMobile(window.innerWidth <= 840);
@@ -233,6 +234,26 @@ export default function Home() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const asperSection = document.querySelector(`.${styles.asper_section}`);
+      if (!asperSection) return;
+
+      const rect = asperSection.getBoundingClientRect();
+      if (rect.top > window.innerHeight || rect.bottom < 0) {
+        setIsVideoPlaying(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleWatchDemo = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsVideoPlaying(true);
+  };
+
   return (
     <div className={styles.page}>
       {/* Top Nav bar */}
@@ -392,7 +413,7 @@ export default function Home() {
         
       </section>
 
-      <section className={styles.asper_section}>
+      <section className={`${styles.asper_section} ${isVideoPlaying ? styles.video_playing : ''}`}>
         <Image 
           src="/images/asper_new_all_trans.png" 
           alt="Aspers" 
@@ -408,7 +429,7 @@ export default function Home() {
           <h1>Asper</h1>
           <h2>Your personal companion, powered by OsmOS</h2>
           <div className={styles.asper_watch_demo_button}>
-            <a href="#">
+            <a href="#" onClick={handleWatchDemo}>
               <svg 
                 width="21" 
                 height="22" 
@@ -427,6 +448,18 @@ export default function Home() {
               Watch Demo
             </a>
           </div>
+        </div>
+
+        <div className={`${styles.video_container} ${isVideoPlaying ? styles.visible : ''}`}>
+          {isVideoPlaying && (
+            <iframe
+              width="853"
+              height="480"
+              src="https://www.youtube.com/embed/e4IrWh2_4_E?autoplay=1"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          )}
         </div>
       </section>
 
@@ -478,9 +511,9 @@ export default function Home() {
         </div>
         <div className={styles.footer_bottom}>
           <div className={styles.footer_bottom_left}>
-            <a href="#">Privacy Policy</a>
+            {/* <a href="#">Privacy Policy</a>
             <a href="#">Terms of Service</a>
-            <a href="#">Cookie Policy</a>
+            <a href="#">Cookie Policy</a> */}
           </div>
           <div>© {new Date().getFullYear()} Ground Zero Lab. All rights reserved.</div>
         </div>

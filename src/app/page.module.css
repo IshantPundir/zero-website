@@ -128,6 +128,8 @@
   }
 }
 
+
+/* Vision Section */
 .vision_section {
   width: 100%;
   height: 100vh;
@@ -141,7 +143,7 @@
   align-items: center;
 }
 
-/* Vision Section */
+
 .vision_section {
   background: #ededed;
   color: #0a0a0a;
@@ -192,12 +194,12 @@
   padding-bottom: 13px;
   cursor: pointer; /* Change cursor to pointer for interactivity */
   transition: transform 0.3s ease; /* Smooth transition for scaling */
-  animation: bounce 2s infinite; /* Continuous bounce animation */
 }
 
 .vision_section > div:last-child:hover {
   transform: translate(-50%, -100%) scale(1.05); /* Scale up on hover */
-  animation: none; /* Stop the bounce animation on hover */
+  animation: bounce 2s infinite; /* Continuous bounce animation */
+
 }
 
 @keyframes bounce {
@@ -398,15 +400,40 @@
   scroll-snap-stop: always;
   overflow: hidden;
   z-index: 1;
+  transition: background-color 0.5s ease;
+}
+
+.asper_section.video_playing {
+  background-color: #000000;
+}
+
+.asper_section.video_playing .asper_section_text {
+  animation: slideOut 1.8s ease forwards;
+}
+
+.asper_section.video_playing img {
+  opacity: 0.1;
+  transition: opacity 1.5s ease;
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translateY(-50%) translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-50%) translateX(100vw);
+    opacity: 0;
+  }
 }
 
 .asper_section img {
   width: auto;
   height: min(80vh, 900px);
-
   object-fit:cover;
   position: absolute;
   bottom: -30px;
+  transition: opacity 1.5s ease;
 }
 
 .asper_section_text {
@@ -502,6 +529,48 @@
   }
   100% {
     transform: scale(1);
+  }
+}
+
+.video_container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 853px;
+  max-width: 90vw;
+  aspect-ratio: 16/9;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1s ease;
+  transition-delay: 1.8s;
+  z-index: 10;
+}
+
+.video_container.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.video_container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  transition-delay: 1.8s;
+}
+
+.video_container.visible iframe {
+  opacity: 1;
+}
+
+/* Add responsive styles for the video */
+@media (max-width: 768px) {
+  .video_container {
+    width: 95vw;
   }
 }
 
