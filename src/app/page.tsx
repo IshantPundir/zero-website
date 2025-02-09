@@ -31,8 +31,8 @@ export default function Home() {
     const sections = gsap.utils.toArray("section");
     
     sections.forEach((section: any, i: number) => {
-      // Only pin the hero section (i === 0)
-      const shouldPin = i === 0;
+      // Pin both hero section (i === 0) and asper section (i === 3)
+      const shouldPin = i === 0 || i === 3;
       
       ScrollTrigger.create({
         trigger: section,
@@ -393,7 +393,6 @@ export default function Home() {
       </section>
 
       <section className={styles.asper_section}>
-        <h1>Asper</h1>
         <Image 
           src="/images/asper_new_all_trans.png" 
           alt="Aspers" 
@@ -404,6 +403,87 @@ export default function Home() {
             transition: 'transform 0.2s ease-out'
           }}
         />
+
+        <div className={styles.asper_section_text}>
+          <h1>Asper</h1>
+          <h2>Your personal companion, powered by OsmOS</h2>
+          <div className={styles.asper_watch_demo_button}>
+            <a href="#">
+              <svg 
+                width="21" 
+                height="22" 
+                viewBox="0 0 21 22" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path 
+                  d="M1 11.0001V17.9671C1 20.2771 3.534 21.7361 5.597 20.6151L8.8 18.8731M1 7.00006V4.03306C1 1.72306 3.534 0.264063 5.597 1.38506L18.409 8.35306C18.8893 8.60847 19.291 8.98975 19.5712 9.45605C19.8514 9.92234 19.9994 10.4561 19.9994 11.0001C19.9994 11.544 19.8514 12.0778 19.5712 12.5441C19.291 13.0104 18.8893 13.3917 18.409 13.6471L12.003 17.1311" 
+                  stroke="currentColor" 
+                  strokeWidth="1.5" 
+                  strokeLinecap="round"
+                  className={styles.play_path}
+                />
+              </svg>
+              Watch Demo
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.footer_section}>
+        <div className={styles.footer_content}>
+          <div className={styles.footer_left}>
+            <h1>Let's Talk!</h1>
+            <p>
+              Ready to explore how our AI solutions can transform your business? 
+              We're here to help you navigate the future of technology.
+            </p>
+            <a href="mailto:contact@groundzerolab.ai" className={styles.footer_cta}>
+              Get in Touch
+            </a>
+          </div>
+          <div className={styles.footer_right}>
+            <div className={styles.footer_links}>
+              <div className={styles.footer_links_column}>
+                <h3>Products</h3>
+                <a href="#">OsmOS</a>
+                <a href="#">Asper</a>
+                <a href="#">Research</a>
+              </div>
+              <div className={styles.footer_links_column}>
+                <h3>Company</h3>
+                <a href="#">About Us</a>
+                <a href="#">Careers</a>
+                <a href="#">Contact</a>
+              </div>
+            </div>
+            <div className={styles.footer_socials}>
+              <a href="#" aria-label="Twitter">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+              </a>
+              <a href="#" aria-label="LinkedIn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/>
+                </svg>
+              </a>
+              <a href="#" aria-label="GitHub">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div className={styles.footer_bottom}>
+          <div className={styles.footer_bottom_left}>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Policy</a>
+          </div>
+          <div>© {new Date().getFullYear()} Ground Zero Lab. All rights reserved.</div>
+        </div>
       </section>
     </div>
   );
