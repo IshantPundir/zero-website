@@ -66,7 +66,9 @@ export default function Home() {
       const logoRect = logo ? logo.getBoundingClientRect() : { bottom: 0 };
       const triggerPoint = logoRect.bottom;
 
-      if (rect.top <= triggerPoint) {
+      if (isVideoPlaying) {
+        setLogoColor("white");
+      } else if (rect.top <= triggerPoint) {
         setLogoColor("black");
       } else {
         setLogoColor("white");
@@ -75,7 +77,7 @@ export default function Home() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isVideoPlaying]);
 
   useEffect(() => {
     const carousel = document.querySelector('.osmos_carousel');
@@ -252,6 +254,7 @@ export default function Home() {
   const handleWatchDemo = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsVideoPlaying(true);
+    setLogoColor("white");
   };
 
   return (
@@ -260,7 +263,13 @@ export default function Home() {
       <Navbar mobile_view={isMobile} color={logoColor} />
 
 
-      <div className={styles.logo}>
+      <div className={styles.logo} onClick={() => {
+        gsap.to(window, {
+          duration: 1,
+          scrollTo: 0,
+          ease: "power2.inOut"
+        });
+      }}>
         <Logo borderWidth="2px" borderColor={logoColor} />
       </div>
 
@@ -339,7 +348,9 @@ export default function Home() {
           </h2>
         </div>
       </section>
+      {/* ---------------------------------------------------- */}
 
+      {/* OsmOS Section */}
       <section className={styles.osmos_section}>
         <h1>OsmOS!</h1>
         <div className={styles.osmos_nav}>
@@ -412,18 +423,37 @@ export default function Home() {
         </div>
         
       </section>
+      {/* ---------------------------------------------------- */}
 
+      {/* Asper section */}
       <section className={`${styles.asper_section} ${isVideoPlaying ? styles.video_playing : ''}`}>
-        <Image 
-          src="/images/asper_new_all_trans.png" 
-          alt="Aspers" 
-          width={2606} 
-          height={840}
-          style={{
-            transform: `translate(${mouseX}px, ${mouseY}px)`,
-            transition: 'transform 0.2s ease-out'
-          }}
-        />
+        <div className={`${styles.video_container} ${isVideoPlaying ? styles.visible : ''}`}>
+          {isVideoPlaying && (
+            <div className={styles.video_wrapper}>
+              <div className={styles.video_background}></div>
+              <iframe
+                width="853"
+                height="480"
+                src="https://www.youtube.com/embed/e4IrWh2_4_E?autoplay=1"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          )}
+        </div>
+
+        <div className={styles.background_wrapper}>
+          <Image 
+            src="/images/asper_new_all_trans.png" 
+            alt="Aspers" 
+            width={2606} 
+            height={840}
+            style={{
+              transform: `translate(${mouseX}px, ${mouseY}px)`,
+              transition: 'transform 0.2s ease-out'
+            }}
+          />
+        </div>
 
         <div className={styles.asper_section_text}>
           <h1>Asper</h1>
@@ -449,20 +479,10 @@ export default function Home() {
             </a>
           </div>
         </div>
-
-        <div className={`${styles.video_container} ${isVideoPlaying ? styles.visible : ''}`}>
-          {isVideoPlaying && (
-            <iframe
-              width="853"
-              height="480"
-              src="https://www.youtube.com/embed/e4IrWh2_4_E?autoplay=1"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          )}
-        </div>
       </section>
+      {/* ---------------------------------------------------- */}
 
+      {/* Footer Section */}
       <section className={styles.footer_section}>
         <div className={styles.footer_content}>
           <div className={styles.footer_left}>

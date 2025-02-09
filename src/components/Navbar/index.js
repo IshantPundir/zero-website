@@ -15,6 +15,18 @@ const NavBarForMobile = (props) => {
     const [mobile_nav_expanded, set_mobile_nav_expanded] = useState(false);
     const nav_ref = useRef();
 
+    const handleNavClick = (e, sectionClass) => {
+        e.preventDefault();
+        const section = document.querySelector(`[class*="${sectionClass}"]`);
+        if (section) {
+            gsap.to(window, {
+                duration: 1,
+                scrollTo: section,
+                ease: "power2.inOut"
+            });
+            hide_nav();
+        }
+    };
 
     function show_nav() {
         nav_show_timeline.play();
@@ -90,10 +102,10 @@ const NavBarForMobile = (props) => {
 
             <div className={styles.mobile_navbar} id="mobile-navbar" ref={nav_ref}>
                 <ul className={styles.primary_nav}>
-                    <li><a href="#" id="mobile-nav-stagger-animation">Vision</a></li>
-                    <li><a href="#" id="mobile-nav-stagger-animation">Products</a></li>
-                    <li><a href="#" id="mobile-nav-stagger-animation">About Us</a></li>
-                    <li><a href="#" id="mobile-nav-stagger-animation">Contact Us</a></li>
+                    <li><a href="#" id="mobile-nav-stagger-animation" onClick={(e) => handleNavClick(e, 'vision_section')}>Our Vision</a></li>
+                    <li><a href="#" id="mobile-nav-stagger-animation" onClick={(e) => handleNavClick(e, 'osmos_section')}>OsmOS</a></li>
+                    <li><a href="#" id="mobile-nav-stagger-animation" onClick={(e) => handleNavClick(e, 'asper_section')}>Asper</a></li>
+                    <li><a href="#" id="mobile-nav-stagger-animation" onClick={(e) => handleNavClick(e, 'footer_section')}>Contact Us</a></li>
                 </ul>
 
                 <div className={styles.social_links}>
@@ -135,13 +147,25 @@ const NavBarForDesktop = ({ color = "white" }) => {
         "--nav-shadow-color": `${color}40` // 40 is for 25% opacity
     };
 
+    const handleNavClick = (e, sectionClass) => {
+        e.preventDefault();
+        const section = document.querySelector(`[class*="${sectionClass}"]`);
+        if (section) {
+            gsap.to(window, {
+                duration: 1,
+                scrollTo: section,
+                ease: "power2.inOut"
+            });
+        }
+    };
+
     return (
         <div className={styles.desktop_navbar} style={navStyle}>
             <ul className={styles.nav_links}>
-                <li><a href="#" id="mobile-nav-stagger-animation">Vision</a></li>
-                <li><a href="#" id="mobile-nav-stagger-animation">Products</a></li>
-                <li><a href="#" id="mobile-nav-stagger-animation">About Us</a></li>
-                <li><a href="#" id="mobile-nav-stagger-animation">Contact Us</a></li>
+                <li><a href="#" id="mobile-nav-stagger-animation" onClick={(e) => handleNavClick(e, 'vision_section')}>Our Vision</a></li>
+                <li><a href="#" id="mobile-nav-stagger-animation" onClick={(e) => handleNavClick(e, 'osmos_section')}>OsmOS</a></li>
+                <li><a href="#" id="mobile-nav-stagger-animation" onClick={(e) => handleNavClick(e, 'asper_section')}>Asper</a></li>
+                <li><a href="#" id="mobile-nav-stagger-animation" onClick={(e) => handleNavClick(e, 'footer_section')}>Contact Us</a></li>
             </ul>
 
             <a alt="Pre oreder Asper" className={styles.cta} onClick={()=>{/* TODO: Add email collection form*/}}>
