@@ -1,43 +1,56 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
-import styles from "./page.module.css";
-import Logo from "@/components/Logo";
-import Navbar from "@/components/Navbar";
+
+import { useEffect, useState } from "react";
 import Image from 'next/image';
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import ScrollToPlugin from "gsap/dist/ScrollToPlugin";
 
+import styles from "./page.module.css";
+import Logo from "@/components/Logo";
+import Navbar from "@/components/Navbar";
+
+// Constants
+const MOBILE_BREAKPOINT = 840;
+const TYPING_SPEEDS = {
+  TYPING: 200,
+  DELETING: 100,
+  PAUSE_BEFORE_DELETE: 1000
+};
+
+const COMPANION_WORDS = ["companion", "BFF", "assistant"];
+
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export default function Home() {
+  // State management
   const [isMobile, setIsMobile] = useState(false);
   const [logoColor, setLogoColor] = useState("white");
-  const [mouseX, setMouseX] = useState(0);
-  const [mouseY, setMouseY] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  
+  // Typing animation states
   const [companionWord, setCompanionWord] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
-  const words = ["companion", "BFF", "assistant"];
 
+  // Mobile detection
   useEffect(() => {
-    setIsMobile(window.innerWidth <= 840);
-    
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 840);
+      setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
     };
 
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Section pinning
   useEffect(() => {
     const sections = gsap.utils.toArray("section");
     
-    sections.forEach((section: any, i: number) => {
-      // Pin both hero section (i === 0) and asper section (i === 3)
-      const shouldPin = i === 0 || i === 3;
+    sections.forEach((section: any, index: number) => {
+      const shouldPin = index === 0 || index === 3;
       
       ScrollTrigger.create({
         trigger: section,
@@ -49,8 +62,7 @@ export default function Home() {
           duration: 0.4,
           delay: 0,
           ease: "power1.inOut",
-          inertia: false,
-          onComplete: undefined
+          inertia: false
         }
       });
     });
@@ -60,34 +72,33 @@ export default function Home() {
     };
   }, []);
 
+  // Logo color management
   useEffect(() => {
     const handleScroll = () => {
       const visionSection = document.querySelector(`.${styles.vision_section}`);
-      if (!visionSection) return;
-
-      const rect = visionSection.getBoundingClientRect();
       const logo = document.querySelector(`.${styles.logo}`);
-      const logoRect = logo ? logo.getBoundingClientRect() : { bottom: 0 };
-      const triggerPoint = logoRect.bottom;
+      
+      if (!visionSection || !logo) return;
 
-      if (isVideoPlaying) {
-        setLogoColor("white");
-      } else if (rect.top <= triggerPoint) {
-        setLogoColor("black");
-      } else {
-        setLogoColor("white");
-      }
+      const visionRect = visionSection.getBoundingClientRect();
+      const logoRect = logo.getBoundingClientRect();
+      
+      const newColor = isVideoPlaying ? "white" : 
+                      visionRect.top <= logoRect.bottom ? "#383838" : "#f2f2f2";
+      
+      setLogoColor(newColor);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isVideoPlaying]);
 
+  // Carousel animation
   useEffect(() => {
     const carousel = document.querySelector('.osmos_carousel');
     if (!carousel) return;
     
-    gsap.to(carousel, {
+    const scrollAnimation = gsap.to(carousel, {
       x: () => -(carousel.scrollWidth - window.innerWidth),
       ease: "none",
       scrollTrigger: {
@@ -105,68 +116,63 @@ export default function Home() {
     };
   }, []);
 
-  const handleExploreClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    console.log('Explore clicked');
-    
-    const visionSection = document.querySelector(`.${styles.vision_section}`);
-    if (visionSection) {
-      console.log('Vision section found');
-      gsap.to(window, {
-        duration: 1,
-        scrollTo: visionSection,
-        ease: "power2.inOut"
-      });
-    } else {
-      console.log('Vision section not found');
+  // Navigation handlers
+  const handleNavigation = {
+    explore: (e: React.MouseEvent) => {
+      e.preventDefault();
+      const visionSection = document.querySelector(`.${styles.vision_section}`);
+      if (visionSection) {
+        gsap.to(window, {
+          duration: 1,
+          scrollTo: visionSection,
+          ease: "power2.inOut"
+        });
+      }
+    },
+
+    osmos: (e: React.MouseEvent) => {
+      e.preventDefault();
+      const osmosSection = document.querySelector(`.${styles.osmos_section}`);
+      if (osmosSection) {
+        gsap.to(window, {
+          duration: 1,
+          scrollTo: osmosSection,
+          ease: "power2.inOut"
+        });
+      }
     }
   };
 
-  const handleOsmosClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    
-    const osmosSection = document.querySelector(`.${styles.osmos_section}`);
-    if (osmosSection) {
-      gsap.to(window, {
-        duration: 1,
-        scrollTo: osmosSection,
-        ease: "power2.inOut"
-      });
-    }
-  };
-
+  // Carousel navigation
   const scrollToItem = (index: number) => {
     const carousel = document.querySelector(`.${styles.osmos_carousel}`) as HTMLElement;
     const items = document.querySelectorAll(`.${styles.osmos_carousel_item}`);
     const buttons = document.querySelectorAll(`.${styles.osmos_nav_button}`);
     const slider = document.querySelector(`.${styles.osmos_nav_slider}`) as HTMLElement;
     
-    if (items[index]) {
-      const scrollAmount = index * (window.innerWidth * 0.8 + 21);
-      carousel.scrollTo({
-        left: scrollAmount,
-        behavior: 'smooth'
-      });
-      
-      // Get the clicked button's position and width
-      const activeButton = buttons[index] as HTMLElement;
-      slider.style.width = `${activeButton.offsetWidth}px`;
-      slider.style.left = `${activeButton.offsetLeft}px`;
-      
-      // Update active button state
-      buttons.forEach((button, i) => {
-        if (i === index) {
-          button.classList.add(styles.active);
-        } else {
-          button.classList.remove(styles.active);
-        }
-      });
-    }
+    if (!items[index]) return;
+
+    const scrollAmount = index * (window.innerWidth * 0.8 + 21);
+    const activeButton = buttons[index] as HTMLElement;
+
+    // Update carousel position
+    carousel.scrollTo({
+      left: scrollAmount,
+      behavior: 'smooth'
+    });
+    
+    // Update slider position
+    slider.style.width = `${activeButton.offsetWidth}px`;
+    slider.style.left = `${activeButton.offsetLeft}px`;
+    
+    // Update button states
+    buttons.forEach((button, i) => {
+      button.classList.toggle(styles.active, i === index);
+    });
   };
 
-  // Make sure to install the ScrollToPlugin
+  // ScrollToPlugin initialization
   useEffect(() => {
-    // Import ScrollToPlugin dynamically to avoid SSR issues
     const loadScrollToPlugin = async () => {
       const ScrollToPlugin = (await import('gsap/ScrollToPlugin')).default;
       gsap.registerPlugin(ScrollToPlugin);
@@ -175,34 +181,30 @@ export default function Home() {
     loadScrollToPlugin();
   }, []);
 
+  // Carousel navigation update
   const updateNavigation = () => {
     const carousel = document.querySelector(`.${styles.osmos_carousel}`) as HTMLElement;
-    const items = document.querySelectorAll(`.${styles.osmos_carousel_item}`);
     const buttons = document.querySelectorAll(`.${styles.osmos_nav_button}`);
     const slider = document.querySelector(`.${styles.osmos_nav_slider}`) as HTMLElement;
 
-    // Calculate which item is most visible
-    const scrollLeft = carousel.scrollLeft;
-    const itemWidth = window.innerWidth * 0.8 + 21; // 80vw + gap
-    const activeIndex = Math.round(scrollLeft / itemWidth);
+    const itemWidth = window.innerWidth * 0.8 + 21;
+    const activeIndex = Math.round(carousel.scrollLeft / itemWidth);
 
-    // Update navigation
     buttons.forEach((button, i) => {
-      if (i === activeIndex) {
-        button.classList.add(styles.active);
+      const isActive = i === activeIndex;
+      button.classList.toggle(styles.active, isActive);
+      
+      if (isActive) {
         const activeButton = button as HTMLElement;
         slider.style.width = `${activeButton.offsetWidth}px`;
         slider.style.left = `${activeButton.offsetLeft}px`;
-      } else {
-        button.classList.remove(styles.active);
       }
     });
   };
 
+  // Initialize carousel navigation
   useEffect(() => {
     const carousel = document.querySelector(`.${styles.osmos_carousel}`);
-    
-    // Initialize slider position
     const activeButton = document.querySelector(`.${styles.osmos_nav_button}.${styles.active}`) as HTMLElement;
     const slider = document.querySelector(`.${styles.osmos_nav_slider}`) as HTMLElement;
     
@@ -211,15 +213,11 @@ export default function Home() {
       slider.style.left = `${activeButton.offsetLeft}px`;
     }
 
-    // Add scroll event listener
     carousel?.addEventListener('scroll', updateNavigation);
-
-    // Cleanup
-    return () => {
-      carousel?.removeEventListener('scroll', updateNavigation);
-    };
+    return () => carousel?.removeEventListener('scroll', updateNavigation);
   }, []);
 
+  // Mouse parallax effect
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       const asperSection = document.querySelector(`.${styles.asper_section}`);
@@ -227,12 +225,13 @@ export default function Home() {
 
       const rect = asperSection.getBoundingClientRect();
       if (e.clientY >= rect.top && e.clientY <= rect.bottom) {
-        // Calculate mouse position relative to the center of the section
         const xValue = (e.clientX - window.innerWidth / 2) / 50;
         const yValue = (e.clientY - rect.top - rect.height / 2) / 50;
         
-        setMouseX(-xValue); // Inverse movement for natural parallax feel
-        setMouseY(-yValue);
+        setMousePosition({ 
+          x: -xValue,
+          y: -yValue 
+        });
       }
     };
 
@@ -240,6 +239,7 @@ export default function Home() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  // Video visibility management
   useEffect(() => {
     const handleScroll = () => {
       const asperSection = document.querySelector(`.${styles.asper_section}`);
@@ -255,47 +255,34 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleWatchDemo = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsVideoPlaying(true);
-    setLogoColor("white");
-  };
-
+  // Typing animation
   useEffect(() => {
-    const targetWord = words[wordIndex];
+    const targetWord = COMPANION_WORDS[wordIndex];
     const currentLength = companionWord.length;
-    
-    // Typing speed in milliseconds
-    const typingSpeed = isDeleting ? 100 : 200;
     
     const timeout = setTimeout(() => {
       if (!isDeleting) {
-        // Typing
         if (currentLength < targetWord.length) {
           setCompanionWord(targetWord.slice(0, currentLength + 1));
         } else {
-          // Wait before starting to delete
-          setTimeout(() => setIsDeleting(true), 1000);
+          setTimeout(() => setIsDeleting(true), TYPING_SPEEDS.PAUSE_BEFORE_DELETE);
         }
       } else {
-        // Deleting
         if (currentLength > 0) {
           setCompanionWord(targetWord.slice(0, currentLength - 1));
         } else {
           setIsDeleting(false);
-          setWordIndex((prev) => (prev + 1) % words.length);
+          setWordIndex((prev) => (prev + 1) % COMPANION_WORDS.length);
         }
       }
-    }, typingSpeed);
+    }, isDeleting ? TYPING_SPEEDS.DELETING : TYPING_SPEEDS.TYPING);
 
     return () => clearTimeout(timeout);
   }, [companionWord, isDeleting, wordIndex]);
 
   return (
     <div className={styles.page}>
-      {/* Top Nav bar */}
       <Navbar mobile_view={isMobile} color={logoColor} />
-
 
       <div className={styles.logo} onClick={() => {
         gsap.to(window, {
@@ -307,12 +294,13 @@ export default function Home() {
         <Logo borderWidth="2px" borderColor={logoColor} />
       </div>
 
-      {/* ---------------------------------------------------- */}
       {/* Hero Section */}
       <section className={styles.hero_section}>
         <h1>Zero</h1>
         <h2>Making Technology Humane</h2>
-        <a href="#" className={styles.hero_cta} onClick={handleExploreClick}>Explore Zero</a>
+        <a href="#" className={styles.hero_cta} onClick={handleNavigation.explore}>
+          Explore Zero
+        </a>
         
         <div className={styles.hero_image_wrapper}>
           <Image
@@ -326,8 +314,7 @@ export default function Home() {
           <div className={styles.hero_image_overlay}/>
         </div>
       </section>
-      {/* ---------------------------------------------------- */}
-      
+
       {/* Vision Section */}
       <section className={styles.vision_section}>
         <div>
@@ -372,7 +359,7 @@ export default function Home() {
           />
         </div>
 
-        <div className={styles.go_to_osmos} onClick={handleOsmosClick}>
+        <div className={styles.go_to_osmos} onClick={handleNavigation.osmos}>
           <svg width="16" height="76" viewBox="0 0 16 76" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M7.29289 75.7071C7.68341 76.0976 8.31658 76.0976 8.7071 75.7071L15.0711 69.3431C15.4616 68.9526 15.4616 68.3195 15.0711 67.9289C14.6805 67.5384 14.0474 67.5384 13.6569 67.9289L8 73.5858L2.34314 67.9289C1.95262 67.5384 1.31945 67.5384 0.928929 67.9289C0.538405 68.3195 0.538405 68.9526 0.928929 69.3431L7.29289 75.7071ZM7 -4.37114e-08L7 75L9 75L9 4.37114e-08L7 -4.37114e-08Z" fill="#383838"/>
           </svg>
@@ -382,7 +369,6 @@ export default function Home() {
           </h2>
         </div>
       </section>
-      {/* ---------------------------------------------------- */}
 
       {/* OsmOS Section */}
       <section className={styles.osmos_section}>
@@ -455,16 +441,13 @@ export default function Home() {
             <Image src="/images/osmos-1.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
           </div>
         </div>
-        
       </section>
-      {/* ---------------------------------------------------- */}
 
       {/* Asper section */}
       <section className={`${styles.asper_section} ${isVideoPlaying ? styles.video_playing : ''}`}>
         <div className={`${styles.video_container} ${isVideoPlaying ? styles.visible : ''}`}>
           {isVideoPlaying && (
             <div className={styles.video_wrapper}>
-              <div className={styles.video_background}></div>
               <iframe
                 width="853"
                 height="480"
@@ -483,7 +466,7 @@ export default function Home() {
             width={2606} 
             height={840}
             style={{
-              transform: `translate(${mouseX}px, ${mouseY}px)`,
+              transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`,
               transition: 'transform 0.2s ease-out'
             }}
           />
@@ -493,7 +476,11 @@ export default function Home() {
           <h1>Asper</h1>
           <h2>Your personal <span className={styles.typewriter}>{companionWord}</span>, powered by OsmOS</h2>
           <div className={styles.asper_watch_demo_button}>
-            <a href="#" onClick={handleWatchDemo}>
+            <a href="#" onClick={(e) => {
+              e.preventDefault();
+              setIsVideoPlaying(true);
+              setLogoColor("white");
+            }}>
               <svg 
                 width="21" 
                 height="22" 
@@ -514,7 +501,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* ---------------------------------------------------- */}
 
       {/* Footer Section */}
       <section className={styles.footer_section}>
@@ -565,9 +551,6 @@ export default function Home() {
         </div>
         <div className={styles.footer_bottom}>
           <div className={styles.footer_bottom_left}>
-            {/* <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Cookie Policy</a> */}
           </div>
           <div>© {new Date().getFullYear()} Ground Zero Lab. All rights reserved.</div>
         </div>

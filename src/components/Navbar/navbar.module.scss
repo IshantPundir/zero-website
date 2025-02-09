@@ -184,7 +184,7 @@
         }
 
         a:hover{
-            font-weight: 700;
+            font-weight: 600;
         }
     }
 
@@ -212,8 +212,8 @@
     }
 
     .cta:hover{
-        color: rgb(14, 255, 243);
-        border: 2px solid rgb(14, 255, 243);
-        box-shadow: 0px 0px 24px 7px rgba(14, 255, 243, 0.542);        
+        // color: rgb(14, 255, 243);
+        // border: 2px solid rgb(14, 255, 243);
+        box-shadow: 0px 0px 24px 7px rgba(0, 0, 0, 0.542);        
     }
 }
