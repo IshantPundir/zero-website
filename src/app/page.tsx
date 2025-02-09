@@ -16,6 +16,10 @@ export default function Home() {
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [companionWord, setCompanionWord] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [wordIndex, setWordIndex] = useState(0);
+  const words = ["companion", "BFF", "assistant"];
 
   useEffect(() => {
     setIsMobile(window.innerWidth <= 840);
@@ -257,6 +261,36 @@ export default function Home() {
     setLogoColor("white");
   };
 
+  useEffect(() => {
+    const targetWord = words[wordIndex];
+    const currentLength = companionWord.length;
+    
+    // Typing speed in milliseconds
+    const typingSpeed = isDeleting ? 100 : 200;
+    
+    const timeout = setTimeout(() => {
+      if (!isDeleting) {
+        // Typing
+        if (currentLength < targetWord.length) {
+          setCompanionWord(targetWord.slice(0, currentLength + 1));
+        } else {
+          // Wait before starting to delete
+          setTimeout(() => setIsDeleting(true), 1000);
+        }
+      } else {
+        // Deleting
+        if (currentLength > 0) {
+          setCompanionWord(targetWord.slice(0, currentLength - 1));
+        } else {
+          setIsDeleting(false);
+          setWordIndex((prev) => (prev + 1) % words.length);
+        }
+      }
+    }, typingSpeed);
+
+    return () => clearTimeout(timeout);
+  }, [companionWord, isDeleting, wordIndex]);
+
   return (
     <div className={styles.page}>
       {/* Top Nav bar */}
@@ -457,7 +491,7 @@ export default function Home() {
 
         <div className={styles.asper_section_text}>
           <h1>Asper</h1>
-          <h2>Your personal companion, powered by OsmOS</h2>
+          <h2>Your personal <span className={styles.typewriter}>{companionWord}</span>, powered by OsmOS</h2>
           <div className={styles.asper_watch_demo_button}>
             <a href="#" onClick={handleWatchDemo}>
               <svg 
