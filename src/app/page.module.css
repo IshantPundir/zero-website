@@ -27,7 +27,7 @@
 
   --transition-fast: 0.3s ease;
   --transition-medium: 0.4s ease-in-out;
-  --transition-slow: 0.5s ease;
+  --transition-slow: 1.8s ease;
 
   --shadow-button: 0px 0px 24px 7px rgba(255, 255, 255, 0.25);
   --shadow-button-hover: 0px 0px 24px 7px rgba(255, 255, 255, 0.542);
@@ -404,16 +404,74 @@
   background-color: var(--color-black);
 }
 
+.asper_section.video_playing .background_wrapper .asper_image {
+  transition: opacity var(--transition-slow);
+  animation: fadeOut 1.8s ease forwards;
+}
+
+/* Adjust height of middle image to 90vh */
+.asper_section.video_playing .background_wrapper .asper_image:nth-child(3) {
+  transition: height var(--transition-slow);
+  height: 90vh;
+  opacity: 1;
+  animation: none;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 .background_wrapper {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  height: 100%;
+  position: fixed;
+  width: fit-content;
+  height: fit-content;
   z-index: 1;
+  /* background-color: red; */
+  /* border: 10px solid white; */
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 100px;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.asper_image {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.asper_image img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  -webkit-box-reflect: below -2.5% linear-gradient(to bottom, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.5));
+}
+
+.asper_demo_video_frame {
+  position: absolute;
+  height: 30.5%;
+  width: 15%;
+  top: 7%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.asper_demo_video_frame iframe {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--border-radius-sm);
+  border: transparent
 }
 
 .video_container {
@@ -425,10 +483,6 @@
   max-width: 1280px;
   display: none;
   z-index: 2;
-}
-
-.video_container.visible {
-  display: block;
 }
 
 .video_wrapper {
@@ -462,14 +516,6 @@
     transform: translateY(-50%) translateX(100vw);
     opacity: 0;
   }
-}
-
-.asper_section img {
-  width: auto;
-  height: min(80vh, 900px);
-  object-fit: cover;
-  position: absolute;
-  bottom: -30px;
 }
 
 .asper_section_text {

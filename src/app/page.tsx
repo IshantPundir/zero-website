@@ -445,31 +445,92 @@ export default function Home() {
 
       {/* Asper section */}
       <section className={`${styles.asper_section} ${isVideoPlaying ? styles.video_playing : ''}`}>
-        <div className={`${styles.video_container} ${isVideoPlaying ? styles.visible : ''}`}>
-          {isVideoPlaying && (
-            <div className={styles.video_wrapper}>
-              <iframe
-                width="853"
-                height="480"
-                src="https://www.youtube.com/embed/e4IrWh2_4_E?autoplay=1"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
-          )}
-        </div>
+        <div className={styles.background_wrapper} 
+             style={{
+               transform: isVideoPlaying ? 'translate(-50%, -80%)' : `translate(-50%, -80%) translate(${mousePosition.x}px, ${mousePosition.y}px)`,
+               transition: 'transform 0.2s ease-out'
+             }}>
+          <div className={`${styles.asper_image}`}>
+            <Image 
+              src="/images/asper-gold-gs.png" 
+              alt="Aspers" 
+              width={2606} 
+              height={840}
+              style={{
+                transition: 'transform 0.2s ease-out',
+                height: '100%',
+                objectFit: 'contain'
+              }}
+            />
+          </div>
+          
+          <div className={`${styles.asper_image}`}>
+            <Image 
+              src="/images/asper-gold-gs.png" 
+              alt="Aspers" 
+              width={2606} 
+              height={840}
+              style={{
+                transition: 'transform 0.2s ease-out',
+                height: '100%',
+                objectFit: 'contain'
+              }}
+            />
+          </div>
 
-        <div className={styles.background_wrapper}>
-          <Image 
-            src="/images/asper_new_all_trans.png" 
-            alt="Aspers" 
-            width={2606} 
-            height={840}
-            style={{
-              transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`,
-              transition: 'transform 0.2s ease-out'
-            }}
-          />
+          <div className={`${styles.asper_image}`}>
+            <Image 
+              src="/images/asper-gold-gs.png" 
+              alt="Aspers" 
+              width={2606} 
+              height={840}
+              style={{
+                transition: 'transform 0.2s ease-out',
+                height: '100%',
+                objectFit: 'contain'
+              }}
+            />
+
+            {isVideoPlaying && (
+              <div className={`${styles.asper_demo_video_frame} ${isVideoPlaying ? styles.visible : ''}`}>
+              <iframe
+                  width="853"
+                  height="480"
+                  src="https://www.youtube.com/embed/e4IrWh2_4_E?autoplay=1"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+            </div>
+            )}
+          </div>
+
+          <div className={`${styles.asper_image}`}>
+            <Image 
+              src="/images/asper-gold-gs.png" 
+              alt="Aspers" 
+              width={2606} 
+              height={840}
+              style={{
+                transition: 'transform 0.2s ease-out',
+                height: '100%',
+                objectFit: 'contain'
+              }}
+            />
+          </div>
+
+          <div className={`${styles.asper_image}`}>
+            <Image 
+              src="/images/asper-gold-gs.png" 
+              alt="Aspers" 
+              width={2606} 
+              height={840}
+              style={{
+                transition: 'transform 0.2s ease-out',
+                height: '100%',
+                objectFit: 'contain'
+              }}
+            />
+          </div>
         </div>
 
         <div className={styles.asper_section_text}>
