@@ -408,7 +408,7 @@ export default function Home() {
                 OsmOS is not just another operating system; it is designed to be an intelligent companion. Unlike traditional utilitarian OS models, OsmOS integrates conversational AI with emotional intelligence, enabling a more natural and intuitive computing experience. It understands users beyond commands, interpreting facial cues, voice tone, and context to respond in a way that feels truly interactive and personal.  
               </p>
             </div>
-            <Image src="/images/osmos-1.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
+            <Image src="/images/osmos/image1.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
           </div>
 
           <div className={styles.osmos_carousel_item}>
@@ -418,7 +418,7 @@ export default function Home() {
                 OsmOS redefines how users interact with applications by merging conversational AI with graphical interfaces we call CGUI. Instead of manually navigating through complex menus, users can control native Flutter applications through natural language commands. Unlike other AI assistants that simulate human actions on apps, OsmOS directly integrates with applications, allowing for fast and efficient execution of tasks at the system level.  
               </p>
             </div>
-            <Image src="/images/osmos-1.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
+            <Image src="/images/osmos/image2.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
           </div>
 
           <div className={styles.osmos_carousel_item}>
@@ -428,7 +428,7 @@ export default function Home() {
                 OsmOS runs multiple deep neural networks (DNNs) natively, ensuring real-time AI processing without relying on cloud servers. It optimizes AI workloads to run efficiently on edge devices, delivering low-latency performance even on resource-constrained hardware. This makes OsmOS not only powerful but also energy-efficient, enabling next-generation AI experiences on personal devices.  
               </p>
             </div>
-            <Image src="/images/osmos-1.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
+            <Image src="/images/osmos/image3.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
           </div>
 
           <div className={styles.osmos_carousel_item}>
@@ -438,7 +438,7 @@ export default function Home() {
                 Privacy is a core principle of OsmOS, with AI models running entirely offline on the host device, ensuring data remains secure. OsmOS is open-source and free, inviting developers to build upon its foundation and create innovative applications. With native AI APIs, developers can seamlessly integrate AI-rich features into their apps, making OsmOS a powerful platform for the future of AI-driven computing.  
               </p>
             </div>
-            <Image src="/images/osmos-1.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
+            <Image src="/images/osmos/image4.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
           </div>
         </div>
       </section>
@@ -493,14 +493,81 @@ export default function Home() {
 
             {isVideoPlaying && (
               <div className={`${styles.asper_demo_video_frame} ${isVideoPlaying ? styles.visible : ''}`}>
-              <iframe
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: '8px',
+                  width: '100%',
+                  height: '100%',
+                  color: 'white',
+                  fontSize: '1.5rem',
+                  position: 'absolute',
+                  opacity: '1',
+                  transition: 'opacity 0.5s ease',
+                  zIndex: 0
+                }}
+                className={styles.loading_text}>
+                  <svg 
+                    width="55" 
+                    height="55" 
+                    viewBox="0 0 24 24" 
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{
+                      animation: 'spin 1s linear infinite'
+                    }}
+                  >
+                    <style>{`
+                      @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                      }
+                    `}</style>
+                    <path
+                      d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4Z"
+                      fill="currentColor"
+                      fillOpacity="0.2"
+                    />
+                    <path
+                      d="M12 2C6.47715 2 2 6.47715 2 12H4C4 7.58172 7.58172 4 12 4V2Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </div>
+                <iframe
                   width="853"
                   height="480"
                   src="https://www.youtube.com/embed/e4IrWh2_4_E?autoplay=1"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
+                  style={{
+                    display: 'none',
+                    position: 'relative',
+                    zIndex: 1
+                  }}
+                  onLoad={(e) => {
+                    const target = e.target as HTMLIFrameElement;
+                    const loadingText = target.parentElement?.querySelector(`.${styles.loading_text}`) as HTMLElement;
+                    
+                    setTimeout(() => {
+                      target.style.display = 'block';
+                      target.style.opacity = '0';
+                      
+                      requestAnimationFrame(() => {
+                        target.style.opacity = '1';
+                        target.style.transition = 'opacity 0.5s ease';
+                        
+                        if (loadingText) {
+                          loadingText.style.opacity = '0';
+                          setTimeout(() => {
+                            loadingText.style.display = 'none';
+                          }, 500);
+                        }
+                      });
+                    }, 1000);
+                  }}
                 />
-            </div>
+              </div>
             )}
           </div>
 
