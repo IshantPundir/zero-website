@@ -51,20 +51,23 @@ export default function Home() {
     
     sections.forEach((section: any, index: number) => {
       const shouldPin = index === 0 || index === 3;
+      const isFooter = index === sections.length - 1;
       
-      ScrollTrigger.create({
-        trigger: section,
-        start: "top top",
-        pin: shouldPin,
-        pinSpacing: false,
-        snap: {
-          snapTo: 1,
-          duration: 0.4,
-          delay: 0,
-          ease: "power1.inOut",
-          inertia: false
-        }
-      });
+      if (!isFooter) {  // Only create ScrollTrigger for non-footer sections
+        ScrollTrigger.create({
+          trigger: section,
+          start: "top top",
+          pin: shouldPin,
+          pinSpacing: false,
+          snap: {
+            snapTo: 1,
+            duration: 0.4,
+            delay: 0,
+            ease: "power1.inOut",
+            inertia: false
+          }
+        });
+      }
     });
 
     return () => {

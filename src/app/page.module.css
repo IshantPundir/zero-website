@@ -163,7 +163,6 @@
   height: 100vh;
   position: relative;
   z-index: 1000;
-  scroll-snap-align: start;
   background: var(--color-gray-light);
   color: var(--color-black);
   display: flex;
@@ -183,10 +182,22 @@
 
 .vision_section > div:first-child h1 {
   text-align: left;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   font-size: var(--font-size-xl);
   font-weight: 600;
   white-space: nowrap;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  color: var(--color-black);
+}
+
+.vision_section > div:first-child p {
+  font-size: var(--font-size-md);
+  line-height: 1.7;
+  color: var(--color-gray-dark);
+  max-width: 90%;
+  font-weight: 400;
+  margin-bottom: var(--spacing-md);
 }
 
 .vision_section > div:nth-child(2) {
@@ -296,8 +307,8 @@
   align-items: center;
   background-color: var(--color-gray-light);
   color: var(--color-black);
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+  background-color: var(--color-gray-light);
+  color: var(--color-black);
 }
 
 .osmos_section h1 {
@@ -427,8 +438,6 @@
   background-color: var(--color-blue);
   color: var(--color-white);
   position: relative;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
   overflow: hidden;
   z-index: 1;
   transition: background-color var(--transition-slow);
@@ -658,7 +667,6 @@
   align-items: center;
   padding: var(--spacing-xxl) var(--spacing-md);
   position: relative;
-  scroll-snap-align: start;
   z-index: 2;
 }
 
