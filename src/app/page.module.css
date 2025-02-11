@@ -1098,6 +1098,7 @@
 
   .asper_image {
     height: 60vh; /* Reduce image height */
+    max-width: 90vw;
   }
 
   /* Video adjustments for mobile */
@@ -1107,8 +1108,11 @@
 
   .asper_demo_video_frame {
     height: 31%; /* Adjust video frame size */
-    width: 80vw; /* Wider frame on mobile */
-    top: 7%;
+    /* width: 80vw; Wider frame on mobile */
+    /* width: 40vw; Wider frame on mobile */
+    width: 18%;
+    border-radius: 50px;
+    /* top: 7%; */
   }
 
   /* Animation adjustments */
