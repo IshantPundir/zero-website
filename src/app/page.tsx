@@ -18,7 +18,7 @@ const TYPING_SPEEDS = {
   PAUSE_BEFORE_DELETE: 1000
 };
 
-const COMPANION_WORDS = ["companion", "BFF", "assistant"];
+const COMPANION_WORDS = ["companion", "assistant"];
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -33,6 +33,9 @@ export default function Home() {
   const [companionWord, setCompanionWord] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
+
+  // Add new state
+  const [isAsperVisible, setIsAsperVisible] = useState(false);
 
   // Mobile detection
   useEffect(() => {
@@ -249,7 +252,8 @@ export default function Home() {
       if (!asperSection) return;
 
       const rect = asperSection.getBoundingClientRect();
-      if (rect.top > window.innerHeight || rect.bottom < 0) {
+      if (rect.top >= window.innerHeight || rect.bottom < 0) {
+        console.log(rect.top, rect.bottom, window.innerHeight);
         setIsVideoPlaying(false);
       }
     };
@@ -282,6 +286,23 @@ export default function Home() {
 
     return () => clearTimeout(timeout);
   }, [companionWord, isDeleting, wordIndex]);
+
+  // Add new effect to track Asper section visibility
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsAsperVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 } // Trigger when at least 10% of the section is visible
+    );
+
+    const asperSection = document.querySelector(`.${styles.asper_section}`);
+    if (asperSection) {
+      observer.observe(asperSection);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className={styles.page}>
@@ -408,7 +429,7 @@ export default function Home() {
             <div>
               <h2>AI Companion</h2>
               <p>
-                OsmOS is not just another operating system; it is designed to be an intelligent companion. Unlike traditional utilitarian OS models, OsmOS integrates conversational AI with emotional intelligence, enabling a more natural and intuitive computing experience. It understands users beyond commands, interpreting facial cues, voice tone, and context to respond in a way that feels truly interactive and personal.  
+                <strong>OsmOS</strong> is not just another operating system; it is designed to be an <strong>intelligent companion</strong>. Unlike traditional utilitarian OS models, OsmOS integrates <strong>conversational AI</strong> with <strong>emotional intelligence</strong>, enabling a more <strong>natural and intuitive</strong> computing experience. It understands users beyond commands, interpreting <strong>facial cues</strong>, <strong>voice tone</strong>, and <strong>context</strong> to respond in a way that feels truly interactive and personal.  
               </p>
             </div>
             <Image src="/images/osmos/image1.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
@@ -418,7 +439,7 @@ export default function Home() {
             <div>
               <h2>Natural Interaction</h2>
               <p>
-                OsmOS redefines how users interact with applications by merging conversational AI with graphical interfaces we call CGUI. Instead of manually navigating through complex menus, users can control native Flutter applications through natural language commands. Unlike other AI assistants that simulate human actions on apps, OsmOS directly integrates with applications, allowing for fast and efficient execution of tasks at the system level.  
+                OsmOS redefines how users interact with applications by merging <strong>conversational AI</strong> with <strong>graphical interfaces</strong> we call <strong>CGUI</strong>. Instead of manually navigating through complex menus, users can control <strong>native Flutter applications</strong> through <strong>natural language commands</strong>. Unlike other AI assistants trying to simulate human actions on apps, OsmOS <strong>directly integrates</strong> with applications, allowing for <strong>fast and efficient execution</strong> of tasks at the system level.  
               </p>
             </div>
             <Image src="/images/osmos/image2.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
@@ -428,7 +449,7 @@ export default function Home() {
             <div>
               <h2>Edge AI </h2>
               <p>
-                OsmOS runs multiple deep neural networks (DNNs) natively, ensuring real-time AI processing without relying on cloud servers. It optimizes AI workloads to run efficiently on edge devices, delivering low-latency performance even on resource-constrained hardware. This makes OsmOS not only powerful but also energy-efficient, enabling next-generation AI experiences on personal devices.  
+                OsmOS runs <strong> 10+ deep neural networks</strong> natively, ensuring <strong>real-time AI processing</strong>. It optimizes <strong>AI workloads</strong> to run efficiently on <strong>edge devices</strong>, delivering <strong>low-latency performance</strong> even on resource-constrained hardware. This makes OsmOS not only powerful but also <strong>energy-efficient</strong>, enabling next-generation AI experiences on personal devices.  
               </p>
             </div>
             <Image src="/images/osmos/image3.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
@@ -438,7 +459,7 @@ export default function Home() {
             <div>
               <h2>Open & Private</h2>
               <p>
-                Privacy is a core principle of OsmOS, with AI models running entirely offline on the host device, ensuring data remains secure. OsmOS is open-source and free, inviting developers to build upon its foundation and create innovative applications. With native AI APIs, developers can seamlessly integrate AI-rich features into their apps, making OsmOS a powerful platform for the future of AI-driven computing.  
+                <strong>Privacy</strong> is a core principle of OsmOS, with AI models running entirely <strong>offline</strong> on the host device, ensuring data remains <strong>secure</strong>. OsmOS is <strong>open-source</strong> and free, inviting developers to build upon its foundation and create innovative applications. With <strong>native AI APIs</strong>, developers can seamlessly integrate AI-rich features into their apps, making OsmOS a powerful platform for the future of <strong>AI-driven computing</strong>.  
               </p>
             </div>
             <Image src="/images/osmos/image4.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
@@ -448,164 +469,166 @@ export default function Home() {
 
       {/* Asper section */}
       <section className={`${styles.asper_section} ${isVideoPlaying ? styles.video_playing : ''}`}>
-        <div className={styles.background_wrapper} 
-             style={{
-               transform: isVideoPlaying ? 'translate(-50%, -80%)' : `translate(-50%, -80%) translate(${mousePosition.x}px, ${mousePosition.y}px)`,
-               transition: 'transform 0.2s ease-out'
-             }}>
-          <div className={`${styles.asper_image}`}>
-            <Image 
-              src="/images/asper-gold-gs.png" 
-              alt="Aspers" 
-              width={2606} 
-              height={840}
-              style={{
-                transition: 'transform 0.2s ease-out',
-                height: '100%',
-                objectFit: 'contain'
-              }}
-            />
-          </div>
-          
-          <div className={`${styles.asper_image}`}>
-            <Image 
-              src="/images/asper-gold-gs.png" 
-              alt="Aspers" 
-              width={2606} 
-              height={840}
-              style={{
-                transition: 'transform 0.2s ease-out',
-                height: '100%',
-                objectFit: 'contain'
-              }}
-            />
-          </div>
-
-          <div className={`${styles.asper_image}`}>
-            <Image 
-              src="/images/asper-gold-gs.png" 
-              alt="Aspers" 
-              width={2606} 
-              height={840}
-              style={{
-                transition: 'transform 0.2s ease-out',
-                height: '100%',
-                objectFit: 'contain'
-              }}
-            />
-
-            {isVideoPlaying && (
-              <div className={`${styles.asper_demo_video_frame} ${isVideoPlaying ? styles.visible : ''}`}>
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  gap: '8px',
-                  width: '100%',
+        {isAsperVisible && (
+          <div className={styles.background_wrapper} 
+               style={{
+                 transform: isVideoPlaying ? 'translate(-50%, -80%)' : `translate(-50%, -80%) translate(${mousePosition.x}px, ${mousePosition.y}px)`,
+                 transition: 'transform 0.2s ease-out'
+               }}>
+            <div className={`${styles.asper_image}`}>
+              <Image 
+                src="/images/asper-gold-gs.png" 
+                alt="Aspers" 
+                width={2606} 
+                height={840}
+                style={{
+                  transition: 'transform 0.2s ease-out',
                   height: '100%',
-                  color: 'white',
-                  fontSize: '1.5rem',
-                  position: 'absolute',
-                  opacity: '1',
-                  transition: 'opacity 0.5s ease',
-                  zIndex: 0
+                  objectFit: 'contain'
                 }}
-                className={styles.loading_text}>
-                  <svg 
-                    width="55" 
-                    height="55" 
-                    viewBox="0 0 24 24" 
-                    xmlns="http://www.w3.org/2000/svg"
-                    style={{
-                      animation: 'spin 1s linear infinite'
-                    }}
-                  >
-                    <style>{`
-                      @keyframes spin {
-                        0% { transform: rotate(0deg); }
-                        100% { transform: rotate(360deg); }
-                      }
-                    `}</style>
-                    <path
-                      d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4Z"
-                      fill="currentColor"
-                      fillOpacity="0.2"
-                    />
-                    <path
-                      d="M12 2C6.47715 2 2 6.47715 2 12H4C4 7.58172 7.58172 4 12 4V2Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </div>
-                <iframe
-                  width="853"
-                  height="480"
-                  src="https://www.youtube.com/embed/e4IrWh2_4_E?autoplay=1"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  style={{
-                    display: 'none',
-                    position: 'relative',
-                    zIndex: 1
+              />
+            </div>
+            
+            <div className={`${styles.asper_image}`}>
+              <Image 
+                src="/images/asper-gold-gs.png" 
+                alt="Aspers" 
+                width={2606} 
+                height={840}
+                style={{
+                  transition: 'transform 0.2s ease-out',
+                  height: '100%',
+                  objectFit: 'contain'
+                }}
+              />
+            </div>
+
+            <div className={`${styles.asper_image}`}>
+              <Image 
+                src="/images/asper-gold-gs.png" 
+                alt="Aspers" 
+                width={2606} 
+                height={840}
+                style={{
+                  transition: 'transform 0.2s ease-out',
+                  height: '100%',
+                  objectFit: 'contain'
+                }}
+              />
+
+              {isVideoPlaying && (
+                <div className={`${styles.asper_demo_video_frame} ${isVideoPlaying ? styles.visible : ''}`}>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: '8px',
+                    width: '100%',
+                    height: '100%',
+                    color: 'white',
+                    fontSize: '1.5rem',
+                    position: 'absolute',
+                    opacity: '1',
+                    transition: 'opacity 0.5s ease',
+                    zIndex: 0
                   }}
-                  onLoad={(e) => {
-                    const target = e.target as HTMLIFrameElement;
-                    const loadingText = target.parentElement?.querySelector(`.${styles.loading_text}`) as HTMLElement;
-                    
-                    setTimeout(() => {
-                      target.style.display = 'block';
-                      target.style.opacity = '0';
-                      
-                      requestAnimationFrame(() => {
-                        target.style.opacity = '1';
-                        target.style.transition = 'opacity 0.5s ease';
-                        
-                        if (loadingText) {
-                          loadingText.style.opacity = '0';
-                          setTimeout(() => {
-                            loadingText.style.display = 'none';
-                          }, 500);
+                  className={styles.loading_text}>
+                    <svg 
+                      width="55" 
+                      height="55" 
+                      viewBox="0 0 24 24" 
+                      xmlns="http://www.w3.org/2000/svg"
+                      style={{
+                        animation: 'spin 1s linear infinite'
+                      }}
+                    >
+                      <style>{`
+                        @keyframes spin {
+                          0% { transform: rotate(0deg); }
+                          100% { transform: rotate(360deg); }
                         }
-                      });
-                    }, 1000);
-                  }}
-                />
-              </div>
-            )}
-          </div>
+                      `}</style>
+                      <path
+                        d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4Z"
+                        fill="currentColor"
+                        fillOpacity="0.2"
+                      />
+                      <path
+                        d="M12 2C6.47715 2 2 6.47715 2 12H4C4 7.58172 7.58172 4 12 4V2Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </div>
+                  <iframe
+                    width="853"
+                    height="480"
+                    src="https://www.youtube.com/embed/e4IrWh2_4_E?autoplay=1"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    style={{
+                      display: 'none',
+                      position: 'relative',
+                      zIndex: 1
+                    }}
+                    onLoad={(e) => {
+                      const target = e.target as HTMLIFrameElement;
+                      const loadingText = target.parentElement?.querySelector(`.${styles.loading_text}`) as HTMLElement;
+                      
+                      setTimeout(() => {
+                        target.style.display = 'block';
+                        target.style.opacity = '0';
+                        
+                        requestAnimationFrame(() => {
+                          target.style.opacity = '1';
+                          target.style.transition = 'opacity 0.5s ease';
+                          
+                          if (loadingText) {
+                            loadingText.style.opacity = '0';
+                            setTimeout(() => {
+                              loadingText.style.display = 'none';
+                            }, 500);
+                          }
+                        });
+                      }, 1000);
+                    }}
+                  />
+                </div>
+              )}
+            </div>
 
-          <div className={`${styles.asper_image}`}>
-            <Image 
-              src="/images/asper-gold-gs.png" 
-              alt="Aspers" 
-              width={2606} 
-              height={840}
-              style={{
-                transition: 'transform 0.2s ease-out',
-                height: '100%',
-                objectFit: 'contain'
-              }}
-            />
-          </div>
+            <div className={`${styles.asper_image}`}>
+              <Image 
+                src="/images/asper-gold-gs.png" 
+                alt="Aspers" 
+                width={2606} 
+                height={840}
+                style={{
+                  transition: 'transform 0.2s ease-out',
+                  height: '100%',
+                  objectFit: 'contain'
+                }}
+              />
+            </div>
 
-          <div className={`${styles.asper_image}`}>
-            <Image 
-              src="/images/asper-gold-gs.png" 
-              alt="Aspers" 
-              width={2606} 
-              height={840}
-              style={{
-                transition: 'transform 0.2s ease-out',
-                height: '100%',
-                objectFit: 'contain'
-              }}
-            />
+            <div className={`${styles.asper_image}`}>
+              <Image 
+                src="/images/asper-gold-gs.png" 
+                alt="Aspers" 
+                width={2606} 
+                height={840}
+                style={{
+                  transition: 'transform 0.2s ease-out',
+                  height: '100%',
+                  objectFit: 'contain'
+                }}
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         <div className={styles.asper_section_text}>
           <h1>Asper</h1>
-          <h2>Your personal <span className={styles.typewriter}>{companionWord}</span>, powered by OsmOS</h2>
+          <h2>Your personal <span className={styles.typewriter}>{companionWord}</span>, powered by OsmOS.</h2>
           <div className={styles.asper_watch_demo_button}>
             <a href="#" onClick={(e) => {
               e.preventDefault();
