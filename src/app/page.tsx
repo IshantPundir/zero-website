@@ -379,33 +379,33 @@ export default function Home() {
             className={`${styles.osmos_nav_button} ${styles.active}`}
             onClick={() => scrollToItem(0)}
           >
-            Overview
+            OsmOS
           </button>
           <button 
             className={styles.osmos_nav_button}
             onClick={() => scrollToItem(1)}
           >
-            Features
+            CGUI
           </button>
           <button 
             className={styles.osmos_nav_button}
             onClick={() => scrollToItem(2)}
           >
-            Technology
+            Edge AI
           </button>
           <button 
             className={styles.osmos_nav_button}
             onClick={() => scrollToItem(3)}
           >
-            Benefits
+            Open & Private
           </button>
         </div>
         <div className={styles.osmos_carousel}>
           <div className={styles.osmos_carousel_item}>
             <div>
-              <h2>OsmOS 1</h2>
+              <h2>AI Companion</h2>
               <p>
-                OsmOS 1 is a new operating system that is designed to be a more intuitive and humane operating system. It is a new operating system that is designed to be a more intuitive and humane operating system.
+                OsmOS is not just another operating system; it is designed to be an intelligent companion. Unlike traditional utilitarian OS models, OsmOS integrates conversational AI with emotional intelligence, enabling a more natural and intuitive computing experience. It understands users beyond commands, interpreting facial cues, voice tone, and context to respond in a way that feels truly interactive and personal.  
               </p>
             </div>
             <Image src="/images/osmos-1.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
@@ -413,9 +413,9 @@ export default function Home() {
 
           <div className={styles.osmos_carousel_item}>
             <div>
-              <h2>OsmOS 2</h2>
+              <h2>Natural Interaction</h2>
               <p>
-                OsmOS 1 is a new operating system that is designed to be a more intuitive and humane operating system. It is a new operating system that is designed to be a more intuitive and humane operating system.
+                OsmOS redefines how users interact with applications by merging conversational AI with graphical interfaces we call CGUI. Instead of manually navigating through complex menus, users can control native Flutter applications through natural language commands. Unlike other AI assistants that simulate human actions on apps, OsmOS directly integrates with applications, allowing for fast and efficient execution of tasks at the system level.  
               </p>
             </div>
             <Image src="/images/osmos-1.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
@@ -423,9 +423,9 @@ export default function Home() {
 
           <div className={styles.osmos_carousel_item}>
             <div>
-              <h2>OsmOS 3</h2>
+              <h2>Edge AI </h2>
               <p>
-                OsmOS 1 is a new operating system that is designed to be a more intuitive and humane operating system. It is a new operating system that is designed to be a more intuitive and humane operating system.
+                OsmOS runs multiple deep neural networks (DNNs) natively, ensuring real-time AI processing without relying on cloud servers. It optimizes AI workloads to run efficiently on edge devices, delivering low-latency performance even on resource-constrained hardware. This makes OsmOS not only powerful but also energy-efficient, enabling next-generation AI experiences on personal devices.  
               </p>
             </div>
             <Image src="/images/osmos-1.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
@@ -433,9 +433,9 @@ export default function Home() {
 
           <div className={styles.osmos_carousel_item}>
             <div>
-              <h2>OsmOS 4</h2>
+              <h2>Open & Private</h2>
               <p>
-                OsmOS 1 is a new operating system that is designed to be a more intuitive and humane operating system. It is a new operating system that is designed to be a more intuitive and humane operating system.
+                Privacy is a core principle of OsmOS, with AI models running entirely offline on the host device, ensuring data remains secure. OsmOS is open-source and free, inviting developers to build upon its foundation and create innovative applications. With native AI APIs, developers can seamlessly integrate AI-rich features into their apps, making OsmOS a powerful platform for the future of AI-driven computing.  
               </p>
             </div>
             <Image src="/images/osmos-1.png" alt="OsmOS 1" width={300} height={0} style={{ height: 'auto' }} />
