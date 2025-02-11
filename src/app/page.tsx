@@ -723,7 +723,7 @@ export default function Home() {
               Ready to explore how our AI solutions can transform your business? 
               We&apos;re here to help you navigate the future of technology.
             </p>
-            <a href="mailto:contact@groundzerolab.ai" className={styles.footer_cta}>
+            <a href="mailto:ishantpundir202@gmail.com" className={styles.footer_cta}>
               Get in Touch
             </a>
           </div>

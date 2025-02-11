@@ -419,7 +419,7 @@
 /* Adjust height of middle image to 90vh */
 .asper_section.video_playing .background_wrapper .asper_image:nth-child(3) {
   transition: height var(--transition-slow);
-  height: 180vh;
+  height: 150vh;
   opacity: 1;
   animation: none;
 }
@@ -439,7 +439,8 @@
     top: 80%;
   }
   100% {
-    top: 160vh;
+    top: 130%
+    /* top: 160vh; */
   }
 }
 
@@ -489,7 +490,7 @@
 .asper_demo_video_frame {
   position: absolute;
   height: 30.5%;
-  width: 25%;
+  width: 22%;
   top: 7%;
   display: flex;
   justify-content: center;
