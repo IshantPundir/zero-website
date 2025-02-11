@@ -11,9 +11,18 @@ const nav_show_timeline = gsap.timeline({
     }
 });
 
-const NavBarForMobile = (props) => {
+const NavBarForMobile = ({ color = "white", ...props }) => {
     const [mobile_nav_expanded, set_mobile_nav_expanded] = useState(false);
     const nav_ref = useRef();
+
+    const menuStyle = {
+        "--menu-color": mobile_nav_expanded ? "white" : color
+    };
+
+    const navStyle = {
+        "--nav-color": color,
+        "--nav-shadow-color": `${color}40` // 40 is for 25% opacity
+    };
 
     const handleNavClick = (e, sectionClass) => {
         e.preventDefault();
@@ -63,36 +72,51 @@ const NavBarForMobile = (props) => {
         // Update timeline configuration
         nav_show_timeline.eventCallback("onStart", () => {
             nav_ref.current.style.display = "block";
-            // document.getElementById("background-noise").style.zIndex = 101;
         });
 
         nav_show_timeline.eventCallback("onReverseComplete", () => {
             nav_ref.current.style.display = "none";
-            // document.getElementById("background-noise").style.zIndex = 1;
         });
         
-        nav_show_timeline
-        .to("#mobile-navbar", {
-            opacity: 1
-        }, "-=1")
-        .from("#mobile-nav-stagger-animation", {
-            opacity: 0,
-            yPercent: -50,
-            stagger: 0.1
-        }, "-=0.5")
-        .from("#mobile-nav-zro", {
-            opacity: 0,
-            xPercent: -100
-        }, "-=1");
+        // Reset and reconfigure the timeline
+        nav_show_timeline.clear();
         
-      return () => {
-        nav_show_timeline.kill();
-      };
+        nav_show_timeline
+            .to("#mobile-navbar", {
+                opacity: 1,
+                duration: 0.3
+            })
+            .from(".primary_nav a", {
+                y: -20,
+                opacity: 0,
+                stagger: 0.1,
+                duration: 0.4
+            }, "-=0.1")
+            .from("#mobile-nav-zro", {
+                x: -30,
+                opacity: 0,
+                duration: 0.4
+            }, "-=0.2")
+            .from(".navbar_contact_links a", {
+                y: 20,
+                opacity: 0,
+                stagger: 0.1,
+                duration: 0.4
+            }, "-=0.3");
+        
+        return () => {
+            nav_show_timeline.kill();
+        };
     }, []);
     
     return (
         <>
-            <button className={`${styles.menu_icon} ${ mobile_nav_expanded ? styles.opened:{}}`} onClick={toggele_nav} aria-label="Main Menu">
+            <button 
+                className={`${styles.menu_icon} ${mobile_nav_expanded ? styles.opened : ''}`} 
+                onClick={toggele_nav} 
+                aria-label="Main Menu"
+                style={menuStyle}
+            >
                 <svg width="50" height="50" viewBox="0 0 100 100">
                     <path className={`${styles.line} ${styles.line1}`} d="M 20,29.000046 H 80.000231 C 80.000231,29.000046 94.498839,28.817352 94.532987,66.711331 94.543142,77.980673 90.966081,81.670246 85.259173,81.668997 79.552261,81.667751 75.000211,74.999942 75.000211,74.999942 L 25.000021,25.000058" />
                     <path className={`${styles.line} ${styles.line2}`} d="M 20,50 H 80" />
@@ -179,6 +203,13 @@ const NavBarForDesktop = ({ color = "white" }) => {
 export default function NavBar(props) {
 
     return (
-        props.mobile_view ? <NavBarForMobile popupCallback={props.popupCallback}/> : <NavBarForDesktop color={props.color}/>
+        props.mobile_view ? 
+            <NavBarForMobile 
+                color={props.color} 
+                popupCallback={props.popupCallback}
+            /> : 
+            <NavBarForDesktop 
+                color={props.color}
+            />
     );
 }

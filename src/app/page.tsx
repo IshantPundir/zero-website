@@ -51,9 +51,10 @@ export default function Home() {
   // Section pinning
   useEffect(() => {
     const sections = gsap.utils.toArray("section");
+    const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
     
     sections.forEach((section: any, index: number) => {
-      const shouldPin = index === 0 || index === 3;
+      const shouldPin = (index === 0 || index === 3) // Only pin on desktop
       const isFooter = index === sections.length - 1;
       
       if (!isFooter) {  // Only create ScrollTrigger for non-footer sections
@@ -62,7 +63,7 @@ export default function Home() {
           start: "top top",
           pin: shouldPin,
           pinSpacing: false,
-          snap: {
+          snap: isMobile ? 0 : { // Disable snap on mobile
             snapTo: 1,
             duration: 0.4,
             delay: 0,
@@ -302,6 +303,63 @@ export default function Home() {
     }
 
     return () => observer.disconnect();
+  }, []);
+
+  // Vision section text animation for mobile
+  useEffect(() => {
+    const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
+    
+    if (isMobile) {
+      // Vision title animation
+      const visionTitle = document.querySelector(`.${styles.vision_section} h1`);
+      
+      if (visionTitle) {
+        gsap.fromTo(visionTitle, 
+          {
+            fontSize: 'clamp(89px, 25vw, 200px)',
+            opacity: 0.3
+          },
+          {
+            fontSize: 'clamp(55px, 15vw, 89px)',
+            opacity: 1,
+            scrollTrigger: {
+              trigger: `.${styles.vision_section}`,
+              start: "top 70%",
+              end: "top 30%",
+              scrub: true,
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+      }
+
+      // OsmOS title animation - now using same font sizes as Vision
+      const osmosTitle = document.querySelector(`.${styles.osmos_section} h1`);
+      
+      if (osmosTitle) {
+        gsap.fromTo(osmosTitle, 
+          {
+            fontSize: 'clamp(89px, 25vw, 200px)',
+            opacity: 0.3
+          },
+          {
+            fontSize: 'clamp(55px, 15vw, 89px)', // Matched with Vision title
+            opacity: 1,
+            scrollTrigger: {
+              trigger: `.${styles.osmos_section}`,
+              start: "top 70%",
+              end: "top 30%",
+              scrub: true,
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+      }
+    }
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
   }, []);
 
   return (

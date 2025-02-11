@@ -89,20 +89,21 @@
   background-color: var(--color-black);
   color: var(--color-white);
   overflow: hidden;
+  padding: 0 var(--spacing-md);
 }
 
 .hero_section h1 {
   font-weight: bold;
-  font-size: var(--font-size-xxl);
+  font-size: clamp(89px, 15vw, var(--font-size-xxl));
   letter-spacing: var(--spacing-sm);
   margin-bottom: 0;
 }
 
 .hero_section h2 {
   font-weight: 300;
-  font-size: var(--font-size-lg);
+  font-size: clamp(var(--font-size-md), 3vw, var(--font-size-lg));
   letter-spacing: var(--spacing-xs);
-  margin-top: -34px;
+  margin-top: clamp(-20px, -3vw, -34px);
 }
 
 .hero_cta {
@@ -129,6 +130,9 @@
   left: 50%;
   transform: translate(-50%, 0);
   z-index: -1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .hero_bottom_image {
@@ -136,7 +140,8 @@
   object-position: top;
   height: min(80vh, 100vw);
   width: auto;
-  max-width: none;
+  max-width: 100%;
+  max-height: 80vh;
 }
 
 .hero_image_overlay {
@@ -307,12 +312,10 @@
   align-items: center;
   background-color: var(--color-gray-light);
   color: var(--color-black);
-  background-color: var(--color-gray-light);
-  color: var(--color-black);
 }
 
 .osmos_section h1 {
-  font-size: var(--font-size-xxl);
+  font-size: clamp(55px, 15vw, var(--font-size-xxl));
   font-weight: 600;
   white-space: nowrap;
   margin-right: auto;
@@ -331,10 +334,7 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
-}
-
-.osmos_carousel::-webkit-scrollbar {
-  display: none;
+  padding: 0 var(--spacing-md);
 }
 
 .osmos_carousel_item {
@@ -351,7 +351,6 @@
   border-radius: var(--border-radius-lg);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   overflow: visible;
-
   padding-left: var(--spacing-md);
 }
 
@@ -455,10 +454,15 @@
 /* Adjust height of middle image to 90vh */
 .asper_section.video_playing .background_wrapper .asper_image:nth-child(3) {
   transition: height var(--transition-slow);
-  /* height: 90vh; */
   height: 180vh;
   opacity: 1;
   animation: none;
+}
+
+@media (max-width: 768px) {
+  .asper_section.video_playing .background_wrapper .asper_image:nth-child(3) {
+    height: 80vh;
+  }
 }
 
 .asper_section.video_playing .background_wrapper {
@@ -814,5 +818,426 @@
   .footer_bottom_left {
     flex-direction: column;
     gap: var(--spacing-sm);
+  }
+}
+
+/* Add media queries for mobile */
+@media (max-width: 768px) {
+  .hero_section {
+    padding: 0 var(--spacing-sm);
+  }
+
+  .hero_image_wrapper {
+    width: 100%;
+  }
+
+  .hero_bottom_image {
+    height: 70vh;
+    width: auto;
+    max-width: 100%;
+  }
+
+  .hero_cta {
+    padding: var(--spacing-xs) var(--spacing-lg);
+    font-size: var(--font-size-md);
+  }
+
+  .logo {
+    transform: scale(0.8); /* Make logo 20% smaller */
+    transform-origin: left center; /* Keep left alignment */
+  }
+
+  .logo svg {
+    width: auto;
+    height: clamp(24px, 5vw, 32px); /* Responsive height */
+  }
+}
+
+/* Add media query for tall/vertical screens */
+@media (aspect-ratio: 2/3), (aspect-ratio: 9/16) {
+  .hero_section {
+    height: 100svh;
+  }
+
+  .hero_image_wrapper {
+    top: 60%;
+  }
+
+  .hero_bottom_image {
+    height: 60vh;
+  }
+}
+
+/* Add mobile optimizations */
+@media (max-width: 768px) {
+  .vision_section {
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--spacing-lg) var(--spacing-md);
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .vision_section > div:first-child {
+    max-width: 100%;
+    margin-left: 0;
+    margin-bottom: 0; /* Remove margin since we're hiding images */
+  }
+
+  .vision_section > div:first-child h1 {
+    font-size: clamp(55px, 15vw, var(--font-size-xl));
+    text-align: center;
+  }
+
+  .vision_section > div:first-child p {
+    max-width: 100%;
+    font-size: var(--font-size-base);
+    text-align: left;
+  }
+
+  /* Hide images and arrow on mobile */
+  .vision_section > div:nth-child(2),
+  .vision_section > div:last-child {
+    display: none;
+  }
+}
+
+/* Keep vertical screen optimization for tablets and larger devices */
+@media (orientation: portrait) and (min-width: 769px) {
+  .vision_section {
+    height: auto;
+    min-height: 100vh;
+    gap: var(--spacing-xl);
+  }
+
+  .vision_section > div:first-child {
+    max-width: 70%;
+  }
+
+  .vision_section > div:nth-child(2) {
+    max-width: 70%;
+    margin: 0 auto;
+  }
+}
+
+/* Mobile and tablet optimizations */
+@media (max-width: 768px) {
+  .osmos_section {
+    height: auto;
+    min-height: 100vh;
+    padding: var(--spacing-lg) 0;
+  }
+
+  .osmos_section h1 {
+    font-size: clamp(55px, 15vw, 89px);
+    margin-bottom: var(--spacing-lg);
+    padding-left: 0;
+    text-align: center;
+    margin-right: 0;
+    width: 100%;
+    margin-left: 0;
+    will-change: font-size, opacity;
+    transition: font-size 0.1s linear;
+  }
+
+  .osmos_nav {
+    width: 100%;
+    overflow-x: auto;
+    padding: 0 var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    margin-left: 0;
+    align-self: center;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overflow: hidden;
+  }
+
+  .osmos_nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .osmos_nav_button {
+    white-space: nowrap;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-sm);
+  }
+
+  .osmos_carousel {
+    padding: 0 var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+
+  .osmos_carousel_item {
+    min-width: calc(100% - var(--spacing-md));
+    height: auto;
+    min-height: 70vh;
+    flex-direction: column;
+    padding: var(--spacing-md);
+  }
+
+  .osmos_carousel_item > div {
+    max-width: 100%;
+    padding-right: 0;
+    gap: var(--spacing-md);
+    order: 2;
+  }
+
+  .osmos_carousel_item h2 {
+    font-size: calc(var(--font-size-xl) * 0.4);
+    text-align: center;
+  }
+
+  .osmos_carousel_item p {
+    font-size: var(--font-size-base);
+    text-align: left;
+    max-width: 100%;
+  }
+
+  .osmos_carousel_item img {
+    order: 1;
+    width: 100% !important;
+    height: auto !important;
+    max-height: 30vh;
+    margin-bottom: var(--spacing-md);
+  }
+}
+
+/* Add touch indicators for mobile */
+@media (max-width: 768px) {
+  .osmos_carousel::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pulseRight 1.5s infinite;
+    pointer-events: none;
+  }
+
+  @keyframes pulseRight {
+    0% {
+      opacity: 0;
+      transform: translateY(-50%) translateX(-10px);
+    }
+    50% {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-50%) translateX(10px);
+    }
+  }
+
+  /* Add pull-to-refresh style indicator */
+  .osmos_carousel {
+    position: relative;
+  }
+
+  .osmos_carousel::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--color-blue) 50%,
+      transparent
+    );
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .osmos_carousel:active::before {
+    opacity: 1;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .osmos_carousel_item {
+    min-width: 95%;
+  }
+
+  .osmos_carousel_item > div {
+    padding-right: var(--spacing-md);
+  }
+
+  .osmos_carousel_item h2 {
+    font-size: calc(var(--font-size-xl) * 0.5);
+  }
+}
+
+/* Add better touch handling for navigation */
+@media (hover: none) {
+  .osmos_nav_button {
+    position: relative;
+  }
+
+  .osmos_nav_button::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: currentColor;
+    transition: width 0.3s;
+  }
+
+  .osmos_nav_button.active::after {
+    width: 100%;
+  }
+}
+
+/* Mobile optimizations for Asper section */
+@media (max-width: 768px) {
+  .asper_section {
+    min-height: 100vh;
+    justify-content: center;
+  }
+
+  .asper_section_text {
+    padding: 0 var(--spacing-md);
+  }
+
+  .asper_section_text h1 {
+    font-size: clamp(89px, 20vw, var(--font-size-xxl));
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .asper_section_text h2 {
+    font-size: clamp(var(--font-size-base), 4vw, var(--font-size-md));
+    margin-top: clamp(-20px, -4vw, -34px);
+    text-align: center;
+    padding: 0 var(--spacing-sm);
+  }
+
+  /* Adjust background images for mobile */
+  .background_wrapper {
+    gap: 50px; /* Reduce gap between images */
+    top: 70%; /* Move images up slightly */
+  }
+
+  .asper_image {
+    height: 60vh; /* Reduce image height */
+  }
+
+  /* Video adjustments for mobile */
+  .video_container {
+    width: 90%; /* Wider video container */
+  }
+
+  .asper_demo_video_frame {
+    height: 31%; /* Adjust video frame size */
+    width: 80vw; /* Wider frame on mobile */
+    top: 7%;
+  }
+
+  /* Animation adjustments */
+  .asper_section.video_playing .background_wrapper {
+    animation: mobileScreenFocus 1s ease forwards;
+  }
+
+  @keyframes mobileScreenFocus {
+    0% {
+      top: 70%;
+    }
+    100% {
+      top: 90%;
+    }
+  }
+
+  /* Button adjustments */
+  .asper_watch_demo_button a {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--font-size-base);
+  }
+}
+
+/* Vertical screen optimizations */
+@media (orientation: portrait) and (min-width: 769px) {
+  .background_wrapper {
+    gap: 75px;
+    top: 75%;
+  }
+
+  .asper_image {
+    height: 70vh;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 380px) {
+  .asper_section_text h1 {
+    font-size: clamp(55px, 15vw, 89px);
+  }
+
+  .asper_section_text h2 {
+    font-size: var(--font-size-base);
+    margin-top: -20px;
+  }
+
+  .background_wrapper {
+    gap: 30px; /* Even smaller gap for very small screens */
+  }
+
+  .asper_image {
+    height: 50vh; /* Smaller images */
+  }
+
+  .logo {
+    transform: scale(0.7); /* Even smaller for very small screens */
+  }
+}
+
+/* Landscape mobile optimization */
+@media (max-height: 480px) and (orientation: landscape) {
+  .asper_section_text {
+    transform: translateY(-30%); /* Move text up slightly */
+  }
+
+  .background_wrapper {
+    top: 85%;
+  }
+
+  .asper_image {
+    height: 80vh;
+  }
+
+  .asper_section.video_playing .background_wrapper {
+    animation: landscapeScreenFocus 1s ease forwards;
+  }
+
+  @keyframes landscapeScreenFocus {
+    0% {
+      top: 85%;
+    }
+    100% {
+      top: 180vh;
+    }
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+  .asper_watch_demo_button a {
+    transition: transform var(--transition-fast);
+  }
+
+  .asper_watch_demo_button a:active {
+    transform: scale(0.95);
   }
 }
