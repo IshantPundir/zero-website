@@ -19,11 +19,6 @@ const NavBarForMobile = ({ color = "white", ...props }) => {
         "--menu-color": mobile_nav_expanded ? "white" : color
     };
 
-    const navStyle = {
-        "--nav-color": color,
-        "--nav-shadow-color": `${color}40` // 40 is for 25% opacity
-    };
-
     const handleNavClick = (e, sectionClass) => {
         e.preventDefault();
         const section = document.querySelector(`[class*="${sectionClass}"]`);

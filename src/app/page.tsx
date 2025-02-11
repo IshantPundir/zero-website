@@ -50,10 +50,10 @@ export default function Home() {
 
   // Section pinning
   useEffect(() => {
-    const sections = gsap.utils.toArray("section");
+    const sections = gsap.utils.toArray("section") as Element[];
     const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
     
-    sections.forEach((section: any, index: number) => {
+    sections.forEach((section: Element, index: number) => {
       const shouldPin = (index === 0 || index === 3) // Only pin on desktop
       const isFooter = index === sections.length - 1;
       
@@ -105,7 +105,7 @@ export default function Home() {
     const carousel = document.querySelector('.osmos_carousel');
     if (!carousel) return;
     
-    const scrollAnimation = gsap.to(carousel, {
+    gsap.to(carousel, {
       x: () => -(carousel.scrollWidth - window.innerWidth),
       ease: "none",
       scrollTrigger: {
@@ -402,7 +402,7 @@ export default function Home() {
         <div>
           <h1>Our Vision</h1>
           <p>
-            At <strong>Ground Zero Lab</strong>, we are pushing the boundaries of <strong>AI</strong> to create technology that is not only powerful but also deeply <strong>intuitive and humane</strong>. Our mission is to bridge the gap between <strong>cutting-edge research</strong> and <strong>real-world applications</strong>, developing <strong>state-of-the-art AI systems</strong> that enhance human potential. From <strong>advanced deep learning</strong> architectures to innovative computing environments, we are re-imagining how AI integrates with daily life. Our focus spans <strong>LLMs</strong>, <strong>multimodal AI</strong>, <strong>generative models</strong>, and <strong>intelligent interfaces</strong>, all designed to make technology more expressive, accessible, and efficient. At Ground Zero Lab, we believe the future of AI isn't just about intelligence—it's about <strong>understanding</strong>, <strong>creativity</strong>, and <strong>seamless interaction</strong> with the world.
+            At <strong>Ground Zero Lab</strong>, we are pushing the boundaries of <strong>AI</strong> to create technology that is not only powerful but also deeply <strong>intuitive and humane</strong>. Our mission is to bridge the gap between <strong>cutting-edge research</strong> and <strong>real-world applications</strong>, developing <strong>state-of-the-art AI systems</strong> that enhance human potential. From <strong>advanced deep learning</strong> architectures to innovative computing environments, we are re-imagining how AI integrates with daily life. Our focus spans <strong>LLMs</strong>, <strong>multimodal AI</strong>, <strong>generative models</strong>, and <strong>intelligent interfaces</strong>, all designed to make technology more expressive, accessible, and efficient. At Ground Zero Lab, we believe the future of AI isn&apos;t just about intelligence—it&apos;s about <strong>understanding</strong>, <strong>creativity</strong>, and <strong>seamless interaction</strong> with the world.
           </p>
         </div>
 
@@ -718,10 +718,10 @@ export default function Home() {
       <section className={styles.footer_section}>
         <div className={styles.footer_content}>
           <div className={styles.footer_left}>
-            <h1>Let's Talk!</h1>
+            <h1>Let&apos;s Talk!</h1>
             <p>
               Ready to explore how our AI solutions can transform your business? 
-              We're here to help you navigate the future of technology.
+              We&apos;re here to help you navigate the future of technology.
             </p>
             <a href="mailto:contact@groundzerolab.ai" className={styles.footer_cta}>
               Get in Touch
