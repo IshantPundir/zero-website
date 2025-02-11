@@ -146,7 +146,7 @@ const NavBarForMobile = ({ color = "white", ...props }) => {
                         <li id="mobile-nav-stagger-animation">
                             <a href="mailto: contact@zro.company"  target="_blank" rel="noopener noreferrer">
                                 <img src="/email.svg" alt="Our Email link"/>
-                                ishant@groundzerolab.com
+                                ishantpundir202@gmail.com
                             </a>
                         </li>
                     </ul>
